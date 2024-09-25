@@ -2,26 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Roboto, Arial, Helvetica, sans-serif;
 }
+.product__range {
+  input[type="range"] {
+    @apply bg-gray-200 w-full h-2 appearance-none rounded-lg cursor-pointer; /* Màu nền của track khi chưa được thay đổi */
+  }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  /* Thay đổi màu của thumb (nút trượt) */
+  input[type="range"]::-webkit-slider-thumb {
+    @apply w-4 h-4 bg-pink-500 rounded-full cursor-pointer; /* Tailwind pink-500 */
+    -webkit-appearance: none; /* Bỏ mặc định */
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    @apply w-4 h-4 bg-pink-500 rounded-full cursor-pointer; /* Tailwind pink-500 */
+  }
+
+  /* Thay đổi màu của track (thanh trượt) */
+  input[type="range"]::-webkit-slider-runnable-track {
+    @apply h-2 bg-pink-300 rounded-lg; /* Tailwind pink-300 */
+  }
+
+  input[type="range"]::-moz-range-track {
+    @apply h-2 bg-pink-300 rounded-lg; /* Tailwind pink-300 */
   }
 }
