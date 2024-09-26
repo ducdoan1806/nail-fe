@@ -1,4 +1,5 @@
 import { ProductType } from "@/models/model";
+import { convertSlugUrl } from "@/utils/const";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -14,7 +15,11 @@ export default function ProductItem(product: ProductType) {
         className="w-full h-48 object-cover"
       />
       <div className="p-4">
-        <Link href={`/products/${product.id}`}>
+        <Link
+          href={`/products/${convertSlugUrl(product.name)}-p${
+            product?.id
+          }.html`}
+        >
           <h2 className="text-xl font-semibold mb-2">{product.name}</h2>
         </Link>
         <div className="flex items-center mb-2">

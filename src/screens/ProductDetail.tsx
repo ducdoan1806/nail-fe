@@ -10,7 +10,7 @@ export default function ProductDetail({
 }) {
   const [selectedColor, setSelectedColor] = useState("Red");
   const [quantity, setQuantity] = useState(1);
-  console.log(productDetail);
+
   const colors = ["Red", "Pink", "Purple", "Blue"];
   return (
     <main className="container mx-auto px-4 py-8">
@@ -19,8 +19,8 @@ export default function ProductDetail({
         <div className="md:w-1/2">
           <div className="bg-white rounded-lg shadow-md overflow-hidden">
             <Image
-              src="/placeholder.svg?height=600&width=600&text=Product Image"
-              alt="Vibrant Nail Polish Set"
+              src={productDetail?.image}
+              alt={productDetail?.name}
               width={600}
               height={600}
               className="w-full h-auto"
@@ -47,7 +47,7 @@ export default function ProductDetail({
         {/* Product Info */}
         <div className="md:w-1/2">
           <h1 className="text-3xl font-bold text-gray-800 mb-4">
-            Vibrant Nail Polish Set
+            {productDetail?.name}
           </h1>
           <div className="flex items-center mb-4">
             <div className="flex text-yellow-400">
@@ -57,7 +57,9 @@ export default function ProductDetail({
             </div>
             <span className="ml-2 text-gray-600">(42 reviews)</span>
           </div>
-          <p className="text-2xl font-bold text-pink-600 mb-4">$24.99</p>
+          <p className="text-2xl font-bold text-pink-600 mb-4">
+            $ {productDetail?.price}
+          </p>
           <p className="text-gray-600 mb-6">
             Experience a burst of color with our Vibrant Nail Polish Set. This
             collection features four stunning shades that are perfect for any

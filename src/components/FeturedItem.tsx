@@ -1,21 +1,25 @@
+import { ProductType } from "@/models/model";
+import { convertSlugUrl } from "@/utils/const";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-export default function FeturedItem({ item }: { item: number }) {
+export default function FeturedItem(props: ProductType) {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
       <Image
-        src={`/placeholder.svg?height=300&width=300&text=Product ${item}`}
-        alt={`Product ${item}`}
+        src={props?.image}
+        alt={props?.name}
         width={300}
         height={300}
         className="w-full h-64 object-cover"
       />
       <div className="p-4">
-        <Link href={`/products/${item}`}>
+        <Link
+          href={`/products/${convertSlugUrl(props.name)}-p${props?.id}.html`}
+        >
           <h3 className="text-xl font-semibold text-gray-800 mb-2 hover:text-pink-600">
-            Nail Polish Set {item}
+            {props?.name}
           </h3>
         </Link>
         <p className="text-gray-600 mb-4">

@@ -20,7 +20,9 @@ export default function Header() {
               key={idx}
               href={item.path}
               className={`text-gray-600 hover:text-pink-600${
-                pathname === item.path ? " text-pink-600 font-semibold" : " "
+                pathname.split("/")[1] === item.path.split("/")[1]
+                  ? " text-pink-600 font-semibold"
+                  : " "
               }`}
             >
               {item.name}

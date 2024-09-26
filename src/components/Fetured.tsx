@@ -1,7 +1,13 @@
 import React from "react";
 import FeturedItem from "./FeturedItem";
+import { ProductType } from "@/models/model";
 
-export default function Fetured() {
+export default async function Fetured() {
+  const res = await fetch(
+    "https://66f3d68777b5e88970971328.mockapi.io/products"
+  );
+  const data = await res.json();
+
   return (
     <section className="py-20">
       <div className="container mx-auto px-4">
@@ -9,8 +15,8 @@ export default function Fetured() {
           Featured Products
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {[1, 2, 3, 4].map((item) => (
-            <FeturedItem key={item} item={item} />
+          {data.slice(0, 4).map((item: ProductType) => (
+            <FeturedItem key={item?.id} {...item} />
           ))}
         </div>
       </div>
