@@ -46,7 +46,7 @@ export default function Payment() {
                                   parseInt(e.target.value) || 0
                                 )
                               }
-                              className="w-12 text-center mx-2 border border-pink-300 rounded-md"
+                              className="w-12 text-center mx-2 border border-pink-300 rounded-md outline-none focus:ring-1 focus:ring-pink-500"
                             />
                             <button
                               className="text-pink-500 hover:text-pink-700"
@@ -108,21 +108,6 @@ export default function Payment() {
                   </div>
                   <div>
                     <label
-                      htmlFor="email"
-                      className="block mb-1 font-medium text-pink-800"
-                    >
-                      <i className="fas fa-envelope mr-2 text-pink-600"></i>
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      className="w-full px-3 py-2 border border-pink-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label
                       htmlFor="phone"
                       className="block mb-1 font-medium text-pink-800"
                     >
@@ -138,15 +123,30 @@ export default function Payment() {
                   </div>
                   <div>
                     <label
-                      htmlFor="card"
+                      htmlFor="address"
                       className="block mb-1 font-medium text-pink-800"
                     >
-                      <i className="fas fa-credit-card mr-2 text-pink-600"></i>
-                      Card Number
+                      <i className="fas fa-map-marker-alt mr-2 text-pink-600"></i>
+                      Address
                     </label>
                     <input
                       type="text"
-                      id="card"
+                      id="address"
+                      className="w-full px-3 py-2 border border-pink-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="city"
+                      className="block mb-1 font-medium text-pink-800"
+                    >
+                      <i className="fas fa-city mr-2 text-pink-600"></i>
+                      City
+                    </label>
+                    <input
+                      type="text"
+                      id="city"
                       className="w-full px-3 py-2 border border-pink-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
                       required
                     />
@@ -154,40 +154,60 @@ export default function Payment() {
                   <div className="flex gap-4">
                     <div className="w-1/2">
                       <label
-                        htmlFor="expiry"
+                        htmlFor="state"
                         className="block mb-1 font-medium text-pink-800"
                       >
-                        Expiry Date
+                        <i className="fas fa-flag-usa mr-2 text-pink-600"></i>
+                        State
                       </label>
                       <input
                         type="text"
-                        id="expiry"
+                        id="state"
                         className="w-full px-3 py-2 border border-pink-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
-                        placeholder="MM/YY"
                         required
                       />
                     </div>
                     <div className="w-1/2">
                       <label
-                        htmlFor="cvv"
+                        htmlFor="zip"
                         className="block mb-1 font-medium text-pink-800"
                       >
-                        CVV
+                        <i className="fas fa-mail-bulk mr-2 text-pink-600"></i>
+                        ZIP Code
                       </label>
                       <input
                         type="text"
-                        id="cvv"
+                        id="zip"
                         className="w-full px-3 py-2 border border-pink-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
                         required
                       />
                     </div>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="payment-method"
+                      className="block mb-1 font-medium text-pink-800"
+                    >
+                      <i className="fas fa-credit-card mr-2 text-pink-600"></i>
+                      Payment Method
+                    </label>
+                    <select
+                      id="payment-method"
+                      className="w-full px-3 py-2 border border-pink-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
+                      required
+                    >
+                      <option value="">Select a payment method</option>
+                      <option value="credit-card">Credit Card</option>
+                      <option value="paypal">PayPal</option>
+                      <option value="cash">Cash on Delivery</option>
+                    </select>
                   </div>
                 </div>
                 <button
                   type="submit"
                   className="w-full mt-6 bg-pink-600 text-white py-2 px-4 rounded-md hover:bg-pink-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2"
                 >
-                  Pay Now
+                  Place Order
                 </button>
               </form>
             </div>

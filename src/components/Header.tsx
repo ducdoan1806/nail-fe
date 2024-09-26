@@ -2,8 +2,13 @@
 import { menu } from "@/utils/const";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import MiniCart from "./MiniCart";
+import { useState } from "react";
+import { useCart } from "@/contexts/CartContext";
 
 export default function Header() {
+  const [openCart, setOpenCart] = useState(false);
+  const { cartItems } = useCart();
   const pathname = usePathname();
   return (
     <header className="bg-white shadow-md sticky top-0">
@@ -30,8 +35,31 @@ export default function Header() {
           ))}
         </nav>
         <div className="flex items-center gap-4">
-          <i className="fas fa-search text-xl text-gray-600"></i>
-          <i className="fas fa-shopping-cart text-xl text-gray-600"></i>
+          <button>
+            <i className="fas fa-search text-xl text-gray-600 hover:text-gray-700"></i>
+          </button>
+          <div className="relative">
+            <button
+              className="relative"
+              onClick={() => {
+                setOpenCart(!openCart);
+              }}
+            >
+              <i className="fas fa-shopping-cart text-xl text-gray-600 hover:text-gray-700"></i>
+              {cartItems.length && (
+                <span className="absolute shadow-sm text-xs bg-pink-500 text-white w-5 h-5 rounded-full flex justify-center items-center -top-2 -right-2">
+                  {cartItems.length}
+                </span>
+              )}
+            </button>
+            {openCart && (
+              <MiniCart
+                closeCart={() => {
+                  setOpenCart(false);
+                }}
+              />
+            )}
+          </div>
         </div>
       </div>
     </header>

@@ -5,6 +5,16 @@
 body {
   font-family: Roboto, Arial, Helvetica, sans-serif;
 }
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Remove arrows in Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
 .product__range {
   input[type="range"] {
     @apply bg-gray-200 w-full h-2 appearance-none rounded-lg cursor-pointer; /* Màu nền của track khi chưa được thay đổi */

@@ -16,10 +16,17 @@ type CartContextType = {
   updateQuantity: (id: number, quantity: number) => void;
   total: number;
 };
+
+const cartData = [
+  { id: 1, name: "Classic Manicure", price: 25, quantity: 1 },
+  { id: 2, name: "Gel Pedicure", price: 45, quantity: 1 },
+  { id: 3, name: "Nail Art", price: 15, quantity: 1 },
+];
+
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [cartItems, setCartItems] = useState<CartItem[]>(cartData);
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
@@ -46,10 +53,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   };
 
   const updateQuantity = (id: number, quantity: number) => {
-    if (quantity >= 0) {
+    if (quantity > 0) {
       setCartItems((prevItems) =>
         prevItems.map((item) => (item.id === id ? { ...item, quantity } : item))
       );
+    }
+    if (quantity === 0) {
+      removeFromCart(id);
     }
   };
   return (
