@@ -18,7 +18,6 @@ export default function MiniCart({ closeCart }: MiniCartProps) {
         <div className="text-center text-pink-600">Giỏ hàng trống</div>
       ) : (
         <>
-          {" "}
           <div className="flex items-center justify-between pb-1 mb-2 border-gray-200 border-b">
             <p className="text-base font-semibold text-pink-800">Cart</p>
             <span className="text-base text-pink-800">${total}</span>

@@ -1,4 +1,5 @@
 "use client";
+import { useCart } from "@/contexts/CartContext";
 import { ProductType } from "@/models/model";
 import Image from "next/image";
 import React, { useState } from "react";
@@ -8,10 +9,21 @@ export default function ProductDetail({
 }: {
   productDetail: ProductType;
 }) {
+  const { addToCart, updateQuantity, cartItems } = useCart();
+  const cartItem = cartItems.find((item) => item?.id === productDetail?.id);
   const [selectedColor, setSelectedColor] = useState("Red");
-  const [quantity, setQuantity] = useState(1);
-
+  const [product, setProduct] = useState({
+    id: productDetail?.id,
+    name: productDetail?.name,
+    price: productDetail?.price,
+    quantity: cartItem?.quantity || 1,
+  });
   const colors = ["Red", "Pink", "Purple", "Blue"];
+  const updateCart = (id: number, number: number) => {
+    setProduct({ ...product, quantity: number });
+    updateQuantity(id, number);
+  };
+
   return (
     <main className="container mx-auto px-4 py-8">
       <div className="flex flex-col md:flex-row gap-8">
@@ -94,15 +106,27 @@ export default function ProductDetail({
             </h2>
             <div className="flex items-center gap-3">
               <button
-                onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                onClick={() =>
+                  updateCart(
+                    productDetail.id,
+                    Math.max(1, product.quantity - 1)
+                  )
+                }
                 className="bg-pink-500 text-white hover:bg-pink-600 px-2 py-1 rounded-full"
                 aria-label="Decrease quantity"
               >
                 <i className="fas fa-minus"></i>
               </button>
-              <span className="text-xl font-semibold">{quantity}</span>
+              <span className="text-xl font-semibold">
+                {cartItem?.quantity || product?.quantity}
+              </span>
               <button
-                onClick={() => setQuantity(quantity + 1)}
+                onClick={() =>
+                  updateCart(
+                    productDetail.id,
+                    Math.max(1, product.quantity + 1)
+                  )
+                }
                 className="bg-pink-500 text-white hover:bg-pink-600 px-2 py-1 rounded-full"
                 aria-label="Increase quantity"
               >
@@ -112,7 +136,12 @@ export default function ProductDetail({
           </div>
 
           {/* Add to Cart Button */}
-          <button className="w-full bg-pink-600 text-white py-3 px-6 rounded-full hover:bg-pink-700 transition duration-300">
+          <button
+            className="w-full bg-pink-600 text-white py-3 px-6 rounded-full hover:bg-pink-700 transition duration-300"
+            onClick={() => {
+              addToCart(product);
+            }}
+          >
             <i className="fas fa-cart-plus mr-2"></i>Add to Cart
           </button>
 

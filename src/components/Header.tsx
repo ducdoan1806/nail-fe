@@ -27,7 +27,7 @@ export default function Header() {
               className={`text-gray-600 hover:text-pink-600${
                 pathname.split("/")[1] === item.path.split("/")[1]
                   ? " text-pink-600 font-semibold"
-                  : " "
+                  : ""
               }`}
             >
               {item.name}

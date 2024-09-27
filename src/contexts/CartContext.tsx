@@ -1,13 +1,9 @@
 "use client";
 
+import { CartItem } from "@/models/model";
 import { createContext, useContext, useEffect, useState } from "react";
 
-type CartItem = {
-  id: number;
-  name: string;
-  price: number;
-  quantity: number;
-};
+
 
 type CartContextType = {
   cartItems: CartItem[];
@@ -42,10 +38,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       const existingItem = prevItems.find((i) => i.id === item.id);
       if (existingItem) {
         return prevItems.map((i) =>
-          i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+          i.id === item.id ? { ...i, quantity: i.quantity} : i
         );
       }
-      return [...prevItems, { ...item, quantity: 1 }];
+      return [...prevItems, { ...item, quantity: item.quantity }];
     });
   };
   const removeFromCart = (id: number) => {
