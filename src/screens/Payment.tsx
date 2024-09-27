@@ -18,11 +18,10 @@ export default function Payment({ citys }: { citys: CityType[] }) {
   const { cartItems, updateQuantity, removeFromCart, total } = useCart();
   const [districts, setDistricts] = useState<DistrictType[]>([]);
   const [wards, setWards] = useState<WardType[]>([]);
+
   const handleProvinceChange = async (e: ChangeEvent<HTMLSelectElement>) => {
     const provinceId = e.target.value;
-    // setSelectedProvince(provinceId);
     setCustomerInfo({ ...customerInfo, city: provinceId, district: "" });
-    // setSelectedDistrict("");
     setWards([]);
     const res = await fetch(
       `https://provinces.open-api.vn/api/p/${provinceId}?depth=2`
@@ -30,17 +29,17 @@ export default function Payment({ citys }: { citys: CityType[] }) {
     const districts = await res.json();
     setDistricts(districts?.districts);
   };
+
   const handleDistrictChange = async (e: ChangeEvent<HTMLSelectElement>) => {
     const districtId = e.target.value;
-    // setSelectedDistrict(districtId);
     setCustomerInfo({ ...customerInfo, district: districtId });
-    // Fetch wards based on selected district
     const res = await fetch(
       `https://provinces.open-api.vn/api/d/${districtId}?depth=2`
     );
     const wards = await res.json();
     setWards(wards.wards);
   };
+
   const handleCustomerInfo = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
