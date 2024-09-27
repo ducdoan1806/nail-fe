@@ -5,6 +5,8 @@ export const metadata: Metadata = {
   title: "Payment - NailGlam",
 };
 
-export default function PaymentPage() {
-  return <Payment />;
+export default async function PaymentPage() {
+  const res = await fetch("https://provinces.open-api.vn/api/p/");
+  const citys = await res.json();
+  return <Payment citys={citys} />;
 }

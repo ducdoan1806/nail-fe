@@ -1,9 +1,51 @@
 "use client";
 
 import { useCart } from "@/contexts/CartContext";
+import { CityType, DistrictType, WardType } from "@/models/model";
+import { ChangeEvent, useState } from "react";
 
-export default function Payment() {
+export default function Payment({ citys }: { citys: CityType[] }) {
+  const [customerInfo, setCustomerInfo] = useState({
+    name: "",
+    phone: "",
+    address: "",
+    city: "",
+    district: "",
+    ward: "",
+    paymentMethod: "",
+  });
+
   const { cartItems, updateQuantity, removeFromCart, total } = useCart();
+  const [districts, setDistricts] = useState<DistrictType[]>([]);
+  const [wards, setWards] = useState<WardType[]>([]);
+  const handleProvinceChange = async (e: ChangeEvent<HTMLSelectElement>) => {
+    const provinceId = e.target.value;
+    // setSelectedProvince(provinceId);
+    setCustomerInfo({ ...customerInfo, city: provinceId, district: "" });
+    // setSelectedDistrict("");
+    setWards([]);
+    const res = await fetch(
+      `https://provinces.open-api.vn/api/p/${provinceId}?depth=2`
+    );
+    const districts = await res.json();
+    setDistricts(districts?.districts);
+  };
+  const handleDistrictChange = async (e: ChangeEvent<HTMLSelectElement>) => {
+    const districtId = e.target.value;
+    // setSelectedDistrict(districtId);
+    setCustomerInfo({ ...customerInfo, district: districtId });
+    // Fetch wards based on selected district
+    const res = await fetch(
+      `https://provinces.open-api.vn/api/d/${districtId}?depth=2`
+    );
+    const wards = await res.json();
+    setWards(wards.wards);
+  };
+  const handleCustomerInfo = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    setCustomerInfo({ ...customerInfo, [e.target.name]: e.target.value });
+  };
   return (
     <div className="min-h-screen py-12">
       <div className="container mx-auto px-4">
@@ -100,8 +142,11 @@ export default function Payment() {
                       Full Name
                     </label>
                     <input
+                      onChange={handleCustomerInfo}
+                      value={customerInfo.name}
                       type="text"
                       id="name"
+                      name="name"
                       className="w-full px-3 py-2 border border-pink-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
                       required
                     />
@@ -115,8 +160,11 @@ export default function Payment() {
                       Phone
                     </label>
                     <input
+                      onChange={handleCustomerInfo}
+                      value={customerInfo.phone}
                       type="tel"
                       id="phone"
+                      name="phone"
                       className="w-full px-3 py-2 border border-pink-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
                       required
                     />
@@ -130,8 +178,11 @@ export default function Payment() {
                       Address
                     </label>
                     <input
+                      onChange={handleCustomerInfo}
+                      value={customerInfo.address}
                       type="text"
                       id="address"
+                      name="address"
                       className="w-full px-3 py-2 border border-pink-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
                       required
                     />
@@ -144,61 +195,95 @@ export default function Payment() {
                       <i className="fas fa-city mr-2 text-pink-600"></i>
                       City
                     </label>
-                    <input
-                      type="text"
+                    <select
+                      value={customerInfo.city}
+                      onChange={handleProvinceChange}
                       id="city"
+                      name="city"
                       className="w-full px-3 py-2 border border-pink-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
                       required
-                    />
+                    >
+                      <option value="" disabled>
+                        Select your city
+                      </option>
+                      {citys.map((city) => (
+                        <option key={city.code} value={city.code}>
+                          {city.name}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                   <div className="flex gap-4">
                     <div className="w-1/2">
                       <label
-                        htmlFor="state"
+                        htmlFor="district"
                         className="block mb-1 font-medium text-pink-800"
                       >
                         <i className="fas fa-flag-usa mr-2 text-pink-600"></i>
-                        State
+                        District
                       </label>
-                      <input
-                        type="text"
-                        id="state"
+                      <select
+                        value={customerInfo.district}
+                        onChange={handleDistrictChange}
+                        id="district"
+                        name="district"
                         className="w-full px-3 py-2 border border-pink-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
                         required
-                      />
+                      >
+                        <option value="" disabled>
+                          Select your district
+                        </option>
+                        {districts.map((item) => (
+                          <option key={item.code} value={item.code}>
+                            {item.name}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                     <div className="w-1/2">
                       <label
-                        htmlFor="zip"
+                        htmlFor="ward"
                         className="block mb-1 font-medium text-pink-800"
                       >
                         <i className="fas fa-mail-bulk mr-2 text-pink-600"></i>
-                        ZIP Code
+                        Wards
                       </label>
-                      <input
-                        type="text"
-                        id="zip"
+                      <select
+                        onChange={handleCustomerInfo}
+                        value={customerInfo.ward}
+                        id="ward"
+                        name="ward"
                         className="w-full px-3 py-2 border border-pink-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
                         required
-                      />
+                      >
+                        <option value="" disabled>
+                          Select your ward
+                        </option>
+                        {wards.map((item) => (
+                          <option key={item.code} value={item.code}>
+                            {item.name}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                   </div>
                   <div>
                     <label
-                      htmlFor="payment-method"
+                      htmlFor="paymentMethod"
                       className="block mb-1 font-medium text-pink-800"
                     >
                       <i className="fas fa-credit-card mr-2 text-pink-600"></i>
                       Payment Method
                     </label>
                     <select
-                      id="payment-method"
+                      onChange={handleCustomerInfo}
+                      value={customerInfo.paymentMethod}
+                      id="paymentMethod"
+                      name="paymentMethod"
                       className="w-full px-3 py-2 border border-pink-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
                       required
                     >
                       <option value="">Select a payment method</option>
-                      <option value="credit-card">Credit Card</option>
-                      <option value="paypal">PayPal</option>
                       <option value="cash">Cash on Delivery</option>
                     </select>
                   </div>
