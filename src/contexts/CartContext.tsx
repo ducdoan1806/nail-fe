@@ -3,8 +3,6 @@
 import { CartItem } from "@/models/model";
 import { createContext, useContext, useEffect, useState } from "react";
 
-
-
 type CartContextType = {
   cartItems: CartItem[];
   addToCart: (item: CartItem) => void;
@@ -13,16 +11,10 @@ type CartContextType = {
   total: number;
 };
 
-const cartData = [
-  { id: 1, name: "Classic Manicure", price: 25, quantity: 1 },
-  { id: 2, name: "Gel Pedicure", price: 45, quantity: 1 },
-  { id: 3, name: "Nail Art", price: 15, quantity: 1 },
-];
-
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
-  const [cartItems, setCartItems] = useState<CartItem[]>(cartData);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
@@ -38,7 +30,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       const existingItem = prevItems.find((i) => i.id === item.id);
       if (existingItem) {
         return prevItems.map((i) =>
-          i.id === item.id ? { ...i, quantity: i.quantity} : i
+          i.id === item.id ? { ...i, quantity: i.quantity } : i
         );
       }
       return [...prevItems, { ...item, quantity: item.quantity }];

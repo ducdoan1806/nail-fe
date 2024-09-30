@@ -1,16 +1,34 @@
-export type ProductType = {
+export type ImageType = {
   id: number;
   image: string;
+  created_at: string;
+};
+export type ProductDetailType = {
+  color_code: string;
+  color_name: string;
+  id: number;
+  price: number;
+  quantity: number;
+};
+export type ProductType = {
+  id: number;
+  images: ImageType[];
   name: string;
   rating: number;
-  price: number;
+  mini_price: number;
   type: string;
+  detail: string;
+  description: string;
+  detail_products: ProductDetailType[];
 };
 export type CartItem = {
   id: number;
   name: string;
   price: number;
   quantity: number;
+  colorCode: string;
+  colorName: string;
+  productDetailId: number;
 };
 export type WardType = {
   name: string;

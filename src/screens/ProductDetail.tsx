@@ -1,6 +1,7 @@
 "use client";
 import { useCart } from "@/contexts/CartContext";
 import { ProductType } from "@/models/model";
+import { API_URL } from "@/utils/const";
 import Image from "next/image";
 import React, { useState } from "react";
 
@@ -11,14 +12,18 @@ export default function ProductDetail({
 }) {
   const { addToCart, updateQuantity, cartItems } = useCart();
   const cartItem = cartItems.find((item) => item?.id === productDetail?.id);
-  const [selectedColor, setSelectedColor] = useState("Red");
+  const [largeImg, setLargeImg] = useState(productDetail?.images[0]?.image);
+
   const [product, setProduct] = useState({
     id: productDetail?.id,
     name: productDetail?.name,
-    price: productDetail?.price,
+    colorCode: productDetail?.detail_products[0]?.color_code,
+    colorName: productDetail?.detail_products[0]?.color_name,
+    price: productDetail?.detail_products[0]?.price,
     quantity: cartItem?.quantity || 1,
+    productDetailId: productDetail?.detail_products[0]?.id,
   });
-  const colors = ["Red", "Pink", "Purple", "Blue"];
+
   const updateCart = (id: number, number: number) => {
     setProduct({ ...product, quantity: number });
     updateQuantity(id, number);
@@ -31,7 +36,7 @@ export default function ProductDetail({
         <div className="md:w-1/2">
           <div className="bg-white rounded-lg shadow-md overflow-hidden">
             <Image
-              src={productDetail?.image}
+              src={`${API_URL}/${largeImg}`}
               alt={productDetail?.name}
               width={600}
               height={600}
@@ -39,13 +44,18 @@ export default function ProductDetail({
             />
           </div>
           <div className="mt-4 grid grid-cols-4 gap-4">
-            {[1, 2, 3, 4].map((item) => (
+            {productDetail?.images.map((item) => (
               <div
-                key={item}
-                className="bg-white rounded-lg shadow-md overflow-hidden"
+                key={item.id}
+                className={`bg-white rounded-lg shadow-md overflow-hidden border  ${
+                  item?.image === largeImg ? "border-pink-400" : "s"
+                }`}
+                onClick={() => {
+                  setLargeImg(item?.image);
+                }}
               >
                 <Image
-                  src={`/placeholder.svg?height=150&width=150&text=Image ${item}`}
+                  src={`${API_URL}/${item?.image}`}
                   alt={`Product image ${item}`}
                   width={150}
                   height={150}
@@ -67,17 +77,11 @@ export default function ProductDetail({
                 <i key={star} className="fas fa-star"></i>
               ))}
             </div>
-            <span className="ml-2 text-gray-600">(42 reviews)</span>
           </div>
           <p className="text-2xl font-bold text-pink-600 mb-4">
-            $ {productDetail?.price}
+            $ {product?.price}
           </p>
-          <p className="text-gray-600 mb-6">
-            Experience a burst of color with our Vibrant Nail Polish Set. This
-            collection features four stunning shades that are perfect for any
-            occasion. Long-lasting, chip-resistant, and easy to apply, these
-            polishes will keep your nails looking fabulous for days.
-          </p>
+          <p className="text-gray-600 mb-6">{productDetail?.description}</p>
 
           {/* Color Selection */}
           <div className="mb-6">
@@ -85,17 +89,32 @@ export default function ProductDetail({
               Select Color:
             </h2>
             <div className="flex space-x-2">
-              {colors.map((color) => (
-                <button
-                  key={color}
-                  onClick={() => setSelectedColor(color)}
-                  className={`w-8 h-8 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 ${
-                    selectedColor === color ? "ring-2 ring-pink-500" : ""
-                  }`}
-                  style={{ backgroundColor: color.toLowerCase() }}
-                  aria-label={`Select ${color}`}
-                ></button>
-              ))}
+              {productDetail?.detail_products.map((detail) => {
+                return (
+                  <button
+                    key={detail?.id}
+                    title={detail?.color_name}
+                    onClick={() => {
+                      setProduct({
+                        ...product,
+                        price: detail?.price,
+                        colorCode: detail?.color_code,
+                        colorName: detail?.color_name,
+                        productDetailId: detail?.id,
+                      });
+                    }}
+                    className={`w-8 h-8 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 ${
+                      product?.colorCode === detail?.color_code
+                        ? "ring-2 ring-pink-500 ring-offset-2"
+                        : ""
+                    }`}
+                    style={{
+                      backgroundColor: detail?.color_code.toLowerCase(),
+                    }}
+                    aria-label={`Select ${detail?.color_code}`}
+                  ></button>
+                );
+              })}
             </div>
           </div>
 
@@ -145,20 +164,20 @@ export default function ProductDetail({
             <i className="fas fa-cart-plus mr-2"></i>Add to Cart
           </button>
 
-          {/* Product Details */}
-          <div className="mt-8">
-            <h2 className="text-xl font-semibold text-gray-800 mb-2">
-              Product Details:
-            </h2>
-            <ul className="list-disc list-inside text-gray-600 space-y-1">
-              <li>Set includes 4 nail polish colors</li>
-              <li>Long-lasting formula</li>
-              <li>Chip-resistant</li>
-              <li>Quick-drying</li>
-              <li>Cruelty-free and vegan</li>
-              <li>15ml / 0.5 fl oz each</li>
-            </ul>
-          </div>
+          {productDetail?.detail && (
+            <div className="mt-8">
+              <h2 className="text-xl font-semibold text-gray-800 mb-2">
+                Product Details:
+              </h2>
+              <ul className="list-disc list-inside text-gray-600 space-y-1">
+                {JSON.parse(productDetail?.detail).map(
+                  (item: string, idx: number) => (
+                    <li key={idx}>Set includes 4 nail polish colors</li>
+                  )
+                )}
+              </ul>
+            </div>
+          )}
         </div>
       </div>
     </main>

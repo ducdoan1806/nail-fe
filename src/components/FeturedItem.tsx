@@ -1,5 +1,5 @@
 import { ProductType } from "@/models/model";
-import { convertSlugUrl } from "@/utils/const";
+import { API_URL, convertSlugUrl } from "@/utils/const";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -8,7 +8,7 @@ export default function FeturedItem(props: ProductType) {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
       <Image
-        src={props?.image}
+        src={API_URL + "/" + props?.images[0]?.image}
         alt={props?.name}
         width={300}
         height={300}
@@ -22,11 +22,11 @@ export default function FeturedItem(props: ProductType) {
             {props?.name}
           </h3>
         </Link>
-        <p className="text-gray-600 mb-4">
-          High-quality, long-lasting nail polish set with vibrant colors.
-        </p>
+        <p className="text-gray-600 mb-4">{props?.description}</p>
         <div className="flex justify-between items-center">
-          <span className="text-lg font-bold text-pink-600">$19.99</span>
+          <span className="text-lg font-bold text-pink-600">
+            ${props?.mini_price}
+          </span>
           <button className="bg-pink-600 text-white py-2 px-4 rounded-full hover:bg-pink-700 transition duration-300">
             <i className="fas fa-cart-plus mr-2"></i>Add to Cart
           </button>

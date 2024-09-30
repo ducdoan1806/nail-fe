@@ -13,7 +13,7 @@ export const products: ProductType[] = [
     name: "Classic Nail Polish",
     price: 9.99,
     rating: 4.5,
-    image: "/placeholder.svg?height=200&width=200",
+    images: "/placeholder.svg?height=200&width=200",
     type: "polish",
   },
   {
@@ -21,7 +21,7 @@ export const products: ProductType[] = [
     name: "Gel Nail Kit",
     price: 29.99,
     rating: 4.8,
-    image: "/placeholder.svg?height=200&width=200",
+    images: "/placeholder.svg?height=200&width=200",
     type: "kit",
   },
   {
@@ -29,7 +29,7 @@ export const products: ProductType[] = [
     name: "Nail Art Stickers",
     price: 4.99,
     rating: 4.2,
-    image: "/placeholder.svg?height=200&width=200",
+    images: "/placeholder.svg?height=200&width=200",
     type: "accessories",
   },
   {
@@ -37,7 +37,7 @@ export const products: ProductType[] = [
     name: "Nail Strengthener",
     price: 14.99,
     rating: 4.7,
-    image: "/placeholder.svg?height=200&width=200",
+    images: "/placeholder.svg?height=200&width=200",
     type: "treatment",
   },
   {
@@ -45,7 +45,7 @@ export const products: ProductType[] = [
     name: "Cuticle Oil",
     price: 7.99,
     rating: 4.6,
-    image: "/placeholder.svg?height=200&width=200",
+    images: "/placeholder.svg?height=200&width=200",
     type: "treatment",
   },
   {
@@ -53,7 +53,7 @@ export const products: ProductType[] = [
     name: "Nail File Set",
     price: 6.99,
     rating: 4.3,
-    image: "/placeholder.svg?height=200&width=200",
+    images: "/placeholder.svg?height=200&width=200",
     type: "accessories",
   },
 ];
@@ -61,3 +61,4 @@ export const convertSlugUrl = (str: string) => {
   if (!str) return "";
   return slugify(str, { lower: true, locale: "vi" });
 };
+export const API_URL = "http://127.0.0.1:8000";

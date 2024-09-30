@@ -2,9 +2,14 @@
 
 import ProductItem from "@/components/ProductItem";
 import { ProductType } from "@/models/model";
+import { API_URL } from "@/utils/const";
 
-import { useState } from "react";
-export default function Products({ products }: { products: ProductType[] }) {
+import { useEffect, useState } from "react";
+export default function Products() {
+  const [products, setProducts] = useState<ProductType[]>([]);
+  const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
   const [priceRange, setPriceRange] = useState({ min: 0, max: 30 });
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [showFilters, setShowFilters] = useState(false);
@@ -17,11 +22,40 @@ export default function Products({ products }: { products: ProductType[] }) {
 
   const filteredProducts = products.filter(
     (product) =>
-      product.price >= priceRange.min &&
-      product.price <= priceRange.max &&
+      product.mini_price >= priceRange.min &&
+      product.mini_price <= priceRange.max &&
       (selectedTypes.length === 0 || selectedTypes.includes(product.type))
   );
+  const loadProducts = async () => {
+    if (isLoading || !hasMore) return;
+    setIsLoading(true);
+    const res = await fetch(
+      `${API_URL}/nail/products/?page=${page}&page_size=12`
+    );
+    const data = await res.json();
+    setProducts((prev) => [...prev, ...data.results]);
+    setHasMore(data.next !== null);
+    setIsLoading(false);
+  };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + window.scrollY >=
+          document.documentElement.scrollHeight &&
+        hasMore
+      ) {
+        setPage((prev) => prev + 1);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [hasMore]);
+
+  useEffect(() => {
+    loadProducts();
+  }, [page]);
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl text-pink-600 font-bold mb-8 text-center">

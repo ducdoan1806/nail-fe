@@ -46,10 +46,12 @@ export default function Header() {
               }}
             >
               <i className="fas fa-shopping-cart text-xl text-gray-600 hover:text-gray-700"></i>
-              {cartItems.length && (
+              {cartItems.length ? (
                 <span className="absolute shadow-sm text-xs bg-pink-500 text-white w-5 h-5 rounded-full flex justify-center items-center -top-2 -right-2">
                   {cartItems.length}
                 </span>
+              ) : (
+                ""
               )}
             </button>
             {openCart && (

@@ -1,12 +1,12 @@
 import React from "react";
 import FeturedItem from "./FeturedItem";
 import { ProductType } from "@/models/model";
+import { API_URL } from "@/utils/const";
 
 export default async function Fetured() {
-  const res = await fetch(
-    "https://66f3d68777b5e88970971328.mockapi.io/products"
-  );
+  const res = await fetch(`${API_URL}/nail/products/?page=1&page_size=4`);
   const data = await res.json();
+  const feturedData = data?.results;
 
   return (
     <section className="py-20">
@@ -15,7 +15,7 @@ export default async function Fetured() {
           Featured Products
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {data.slice(0, 4).map((item: ProductType) => (
+          {feturedData.map((item: ProductType) => (
             <FeturedItem key={item?.id} {...item} />
           ))}
         </div>

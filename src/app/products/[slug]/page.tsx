@@ -1,5 +1,5 @@
-import { ProductType } from "@/models/model";
 import ProductDetail from "@/screens/ProductDetail";
+import { API_URL } from "@/utils/const";
 export async function generateMetadata({
   params,
 }: {
@@ -8,16 +8,11 @@ export async function generateMetadata({
   const { slug } = params;
 
   const id = slug?.match(/p(\d+)\.html/)?.[1];
-  const res = await fetch(
-    `https://66f3d68777b5e88970971328.mockapi.io/products`
-  );
+  const res = await fetch(`${API_URL}/nail/products/?product_id=${id}`);
   const data = await res.json();
-  const productDetail = data.find(
-    (item: ProductType) => item.id === Number(id)
-  );
 
   return {
-    title: productDetail.name + " - NailGlam",
+    title: data?.data.name + " - NailGlam",
   };
 }
 export default async function ProductDetailPage({
@@ -28,12 +23,8 @@ export default async function ProductDetailPage({
   const { slug } = params;
   const id = slug?.match(/p(\d+)\.html/)?.[1];
 
-  const res = await fetch(
-    `https://66f3d68777b5e88970971328.mockapi.io/products`
-  );
+  const res = await fetch(`${API_URL}/nail/products/?product_id=${id}`);
   const data = await res.json();
-  const productDetail = data.find(
-    (item: ProductType) => item.id === Number(id)
-  );
-  return <ProductDetail productDetail={productDetail} />;
+
+  return <ProductDetail productDetail={data?.data} />;
 }
