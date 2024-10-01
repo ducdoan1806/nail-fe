@@ -34,11 +34,11 @@ export default function ProductsPage({
     );
     const data = await res.json();
 
-    setAllProducts((prev) => [...prev, ...data.results]);
+    setAllProducts((prev) => [...prev, ...(data?.results || [])]);
     setPage((prev) => prev + 1);
 
     // Check if we've fetched all available products
-    setHasMore(allProducts.length + data.results.length < totalProducts);
+    setHasMore(allProducts.length + data?.results?.length < totalProducts);
   };
 
   // Handle filter changes

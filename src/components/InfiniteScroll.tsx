@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, ReactNode, useCallback } from "react";
+import { useEffect, useState, ReactNode, useCallback } from "react";
 
 interface InfiniteScrollProps {
   loadMore: () => Promise<void>;
@@ -13,45 +13,34 @@ export default function InfiniteScroll({
   children,
   loading = "Loading...",
 }: InfiniteScrollProps) {
-  const loaderRef = useRef<HTMLDivElement | null>(null);
   const [isFetching, setIsFetching] = useState(false);
 
-  const handleObserver = useCallback(
-    (entries: IntersectionObserverEntry[]) => {
-      const target = entries[0];
-      if (target.isIntersecting && hasMore && !isFetching) {
-        setIsFetching(true);
-        loadMore().finally(() => setIsFetching(false));
-      }
-    },
-    [loadMore, hasMore, isFetching]
-  );
+  const handleScroll = useCallback(() => {
+    // Check if we're at the bottom of the page
+    if (
+      window.innerHeight + document.documentElement.scrollTop >=
+        document.documentElement.offsetHeight &&
+      hasMore &&
+      !isFetching
+    ) {
+      setIsFetching(true);
+      loadMore().finally(() => setIsFetching(false));
+    }
+  }, [hasMore, isFetching, loadMore]); // Include dependencies
 
   useEffect(() => {
-    const currentLoader = loaderRef.current;
-    const observer = new IntersectionObserver(handleObserver, {
-      root: null,
-      rootMargin: "20px",
-      threshold: 1.0,
-    });
-
-    if (currentLoader) {
-      observer.observe(currentLoader);
-    }
-
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      if (currentLoader) {
-        observer.unobserve(currentLoader);
-      }
+      window.removeEventListener("scroll", handleScroll);
     };
-  }, [handleObserver]);
+  }, [handleScroll]); // Now include handleScroll
 
   return (
     <>
       {children}
-      <div ref={loaderRef} className="py-4 text-center text-pink-600">
-        {isFetching && loading}
-      </div>
+      {isFetching && (
+        <div className="py-4 text-center text-pink-600">{loading}</div>
+      )}
     </>
   );
 }
