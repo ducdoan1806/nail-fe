@@ -15,21 +15,21 @@ export default function FeturedItem(props: ProductType) {
         className="w-full h-64 object-cover"
       />
       <div className="p-4">
-        <Link
-          href={`/products/${convertSlugUrl(props.name)}-p${props?.id}.html`}
-        >
-          <h3 className="text-xl font-semibold text-gray-800 mb-2 hover:text-pink-600">
-            {props?.name}
-          </h3>
-        </Link>
+        <h3 className="text-xl font-semibold text-gray-800 mb-2">
+          {props?.name}
+        </h3>
+
         <p className="text-gray-600 mb-4">{props?.description}</p>
         <div className="flex justify-between items-center">
           <span className="text-lg font-bold text-pink-600">
             ${props?.mini_price}
           </span>
-          <button className="bg-pink-600 text-white py-2 px-4 rounded-full hover:bg-pink-700 transition duration-300">
-            <i className="fas fa-cart-plus mr-2"></i>Add to Cart
-          </button>
+          <Link
+            href={`/products/${convertSlugUrl(props.name)}-p${props?.id}.html`}
+            className="bg-pink-600 text-white py-2 px-4 rounded-full hover:bg-pink-700 transition duration-300"
+          >
+            View more <i className="ml-2 fa-solid fa-angles-right"></i>
+          </Link>
         </div>
       </div>
     </div>
