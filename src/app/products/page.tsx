@@ -3,11 +3,11 @@ import { API_URL } from "@/utils/const";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Products - NailGlam",
+  title: "Products - Gạo Nails",
 };
 
 export default async function ProductsPage() {
-  const res = await fetch(`${API_URL}/nail/products/?page=1&page_size=10`);
+  const res = await fetch(`${API_URL}/nail/products/?page=1&page_size=8`);
   const data = await res.json();
   return <Products products={data.results} />;
 }

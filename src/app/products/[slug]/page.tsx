@@ -12,7 +12,7 @@ export async function generateMetadata({
   const data = await res.json();
 
   return {
-    title: data?.data.name + " - NailGlam",
+    title: data?.data.name + " - Gạo Nails",
   };
 }
 export default async function ProductDetailPage({

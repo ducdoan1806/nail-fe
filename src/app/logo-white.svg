@@ -1,0 +1,11 @@
+<svg viewBox="54 55 107 126" fill="transparent"
+    xmlns="http://www.w3.org/2000/svg">
+    <!-- Stylized "G" forming a nail shape -->
+    <path d="M60 100C60 77.9086 77.9086 60 100 60C122.091 60 140 77.9086 140 100V140" stroke="#fff" stroke-width="10" strokeLinecap="round" />
+
+    <!-- The "ạ" forming a simplified rice grain -->
+    <path d="M100 100C100 100 120 110 120 130C120 150 100 160 100 160" stroke="#fff" stroke-width="10" strokeLinecap="round" />
+
+    <!-- The "o" as a nail polish drop -->
+    <circle cx="140" cy="140" r="20" fill="#fff" />
+</svg>

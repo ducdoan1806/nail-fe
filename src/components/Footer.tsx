@@ -1,10 +1,14 @@
+import logo from "@/app/logo-white.svg";
+import Image from "next/image";
 export default function Footer() {
   return (
     <footer className="bg-gray-800 text-white py-10">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <h3 className="text-xl font-semibold mb-4">NailGlam</h3>
+            <h3 className="text-xl font-semibold mb-4">
+              <Image src={logo} alt="" className="w-20 h-auto" />
+            </h3>
             <p className="text-gray-400">
               Your one-stop shop for all your nail care needs.
             </p>
@@ -62,7 +66,7 @@ export default function Footer() {
         </div>
         <div className="mt-8 pt-8 border-t border-gray-700 text-center">
           <p className="text-gray-400">
-            &copy; 2024 NailGlam. All rights reserved.
+            &copy; 2024 Gạo Nails. All rights reserved.
           </p>
         </div>
       </div>

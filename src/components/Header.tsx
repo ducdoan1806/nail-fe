@@ -5,6 +5,8 @@ import { usePathname } from "next/navigation";
 import MiniCart from "./MiniCart";
 import { useState } from "react";
 import { useCart } from "@/contexts/CartContext";
+import logo from "@/app/logo.svg";
+import Image from "next/image";
 
 export default function Header() {
   const [openCart, setOpenCart] = useState(false);
@@ -12,11 +14,13 @@ export default function Header() {
   const pathname = usePathname();
   return (
     <header className="bg-white shadow-md sticky top-0">
-      <div className="container mx-auto px-4 py-6 flex items-center justify-between">
+      <div className="container mx-auto px-5 py-3 flex items-center justify-between">
         <div className="flex items-center">
           <i className="fas fa-bars text-xl md:hidden"></i>
           <a href="/">
-            <h1 className="text-2xl font-bold text-pink-600">NailGlam</h1>
+            <h1 className="text-2xl font-bold text-pink-600">
+              <Image src={logo} alt="" className="w-14 h-auto" />
+            </h1>
           </a>
         </div>
         <nav className="hidden md:flex gap-4">

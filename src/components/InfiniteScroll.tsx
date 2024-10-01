@@ -38,9 +38,7 @@ export default function InfiniteScroll({
   return (
     <>
       {children}
-      {isFetching && (
-        <div className="py-4 text-center text-pink-600">{loading}</div>
-      )}
+      {isFetching && <div className="py-4 w-fit mx-auto">{loading}</div>}
     </>
   );
 }

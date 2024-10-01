@@ -5,6 +5,7 @@ import { ProductType } from "@/models/model";
 import InfiniteScroll from "@/components/InfiniteScroll"; // Import the InfiniteScroll component
 import { useState, useEffect, useCallback } from "react";
 import { API_URL } from "@/utils/const";
+import Loading from "@/components/Loading";
 
 export default function ProductsPage({
   products,
@@ -28,7 +29,7 @@ export default function ProductsPage({
     const typeFilter =
       selectedTypes.length > 0 ? `&type=${selectedTypes.join(",")}` : "";
     const res = await fetch(
-      `${API_URL}/nail/products?page=${page + 1}&page_size=10&min_price=${
+      `${API_URL}/nail/products?page=${page + 1}&page_size=8&min_price=${
         priceRange.min
       }&max_price=${priceRange.max}${typeFilter}`
     );
@@ -59,7 +60,7 @@ export default function ProductsPage({
     const typeFilter =
       selectedTypes.length > 0 ? `&type=${selectedTypes.join(",")}` : "";
     const res = await fetch(
-      `${API_URL}/nail/products?page=1&page_size=10&min_price=${priceRange.min}&max_price=${priceRange.max}${typeFilter}`
+      `${API_URL}/nail/products?page=1&page_size=8&min_price=${priceRange.min}&max_price=${priceRange.max}${typeFilter}`
     );
     const data = await res.json();
 
@@ -146,7 +147,11 @@ export default function ProductsPage({
       </div>
 
       {/* Infinite Scroll Component */}
-      <InfiniteScroll loadMore={loadMoreProducts} hasMore={hasMore}>
+      <InfiniteScroll
+        loadMore={loadMoreProducts}
+        hasMore={hasMore}
+        loading={<Loading />}
+      >
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7">
           {allProducts.map((product) => (
             <ProductItem key={product?.id} {...product} />

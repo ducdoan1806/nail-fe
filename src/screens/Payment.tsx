@@ -13,7 +13,7 @@ export default function Payment({ citys }: { citys: CityType[] }) {
     city: "",
     district: "",
     ward: "",
-    paymentMethod: "",
+    paymentMethod: "cash",
   });
 
   const { cartItems, updateQuantity, removeFromCart, total } = useCart();
@@ -169,24 +169,7 @@ export default function Payment({ citys }: { citys: CityType[] }) {
                       required
                     />
                   </div>
-                  <div>
-                    <label
-                      htmlFor="address"
-                      className="block mb-1 font-medium text-pink-800"
-                    >
-                      <i className="fas fa-map-marker-alt mr-2 text-pink-600"></i>
-                      Address
-                    </label>
-                    <input
-                      onChange={handleCustomerInfo}
-                      value={customerInfo.address}
-                      type="text"
-                      id="address"
-                      name="address"
-                      className="w-full px-3 py-2 border border-pink-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
-                      required
-                    />
-                  </div>
+
                   <div>
                     <label
                       htmlFor="city"
@@ -213,6 +196,7 @@ export default function Payment({ citys }: { citys: CityType[] }) {
                       ))}
                     </select>
                   </div>
+
                   <div className="flex gap-4">
                     <div className="w-1/2">
                       <label
@@ -269,6 +253,24 @@ export default function Payment({ citys }: { citys: CityType[] }) {
                   </div>
                   <div>
                     <label
+                      htmlFor="address"
+                      className="block mb-1 font-medium text-pink-800"
+                    >
+                      <i className="fas fa-map-marker-alt mr-2 text-pink-600"></i>
+                      Address
+                    </label>
+                    <input
+                      onChange={handleCustomerInfo}
+                      value={customerInfo.address}
+                      type="text"
+                      id="address"
+                      name="address"
+                      className="w-full px-3 py-2 border border-pink-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label
                       htmlFor="paymentMethod"
                       className="block mb-1 font-medium text-pink-800"
                     >
@@ -283,7 +285,6 @@ export default function Payment({ citys }: { citys: CityType[] }) {
                       className="w-full px-3 py-2 border border-pink-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
                       required
                     >
-                      <option value="">Select a payment method</option>
                       <option value="cash">Cash on Delivery</option>
                     </select>
                   </div>
