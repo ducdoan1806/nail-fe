@@ -1,28 +1,21 @@
+import { CityType } from "@/models/model";
 import Payment from "@/screens/Payment";
+import fetchHttps from "@/utils/https";
 import { Metadata } from "next";
-import React from "react";
 import { redirect } from "next/navigation";
-
+import React from "react";
 export const metadata: Metadata = {
   title: "Payment - NailGlam",
 };
 
 export default async function PaymentPage() {
   try {
-    const res = await fetch("https://provinces.open-api.vn/api/p/");
-
-    // Check if the response is ok (status code 200-299)
-    if (!res.ok) {
-      // If the response is not ok, navigate to the 404 page
-      redirect("/not-found");
-    }
-
-    const citys = await res.json();
-
+    const citys = await fetchHttps<CityType[]>(
+      "https://provinces.open-api.vn/api/p/"
+    );
     return <Payment citys={citys} />;
   } catch (error) {
     console.error("Failed to fetch city data:", error);
-    // If there is an error in fetching data, navigate to the not-found page
     redirect("/not-found");
   }
 }

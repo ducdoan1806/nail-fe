@@ -15,7 +15,7 @@ export default function MiniCart({ closeCart }: MiniCartProps) {
       ref={ref}
     >
       {cartItems.length === 0 ? (
-        <div className="text-center text-pink-600">Giỏ hàng trống</div>
+        <div className="text-center text-pink-600">Cart is empty</div>
       ) : (
         <>
           <div className="flex items-center justify-between pb-1 mb-2 border-gray-200 border-b">
@@ -64,7 +64,7 @@ export default function MiniCart({ closeCart }: MiniCartProps) {
             className="block text-center mt-3 p-2 w-full bg-pink-600 hover:bg-pink-700 text-white text-sm rounded-full"
             onClick={closeCart}
           >
-            Đặt hàng ngay
+            Order now
           </Link>
         </>
       )}
