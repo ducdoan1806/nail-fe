@@ -1,61 +1,57 @@
-import { useState, useEffect, useCallback } from "react";
+import { useEffect, useRef, useState, ReactNode, useCallback } from "react";
 
-interface InfiniteScrollProps<T> {
-  fetchData: (
-    page: number,
-    filters?: Record<string, string | number>
-  ) => Promise<T[]>;
-  renderItems: (items: T[]) => JSX.Element;
-  filters?: Record<string, string | number>;
+interface InfiniteScrollProps {
+  loadMore: () => Promise<void>;
+  hasMore: boolean;
+  children: ReactNode;
+  loading?: ReactNode;
 }
 
-export default function InfiniteScroll<T>({
-  fetchData,
-  renderItems,
-  filters = {},
-}: InfiniteScrollProps<T>) {
-  const [items, setItems] = useState<T[]>([]);
-  const [page, setPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
+export default function InfiniteScroll({
+  loadMore,
+  hasMore,
+  children,
+  loading = "Loading...",
+}: InfiniteScrollProps) {
+  const loaderRef = useRef<HTMLDivElement | null>(null);
+  const [isFetching, setIsFetching] = useState(false);
 
-  const loadMoreItems = useCallback(async () => {
-    if (isLoading || !hasMore) return;
-    setIsLoading(true);
-    const data = await fetchData(page, filters);
-    setItems((prev) => (page === 1 ? data : [...prev, ...data]));
-    setHasMore(data.length > 0);
-    setIsLoading(false);
-  }, [page, filters, fetchData, isLoading, hasMore]);
-
-  useEffect(() => {
-    setPage(1);
-    setItems([]);
-  }, [filters]);
+  const handleObserver = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      const target = entries[0];
+      if (target.isIntersecting && hasMore && !isFetching) {
+        setIsFetching(true);
+        loadMore().finally(() => setIsFetching(false));
+      }
+    },
+    [loadMore, hasMore, isFetching]
+  );
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (
-        window.innerHeight + window.scrollY >=
-          document.documentElement.scrollHeight &&
-        hasMore
-      ) {
-        setPage((prev) => prev + 1);
+    const currentLoader = loaderRef.current;
+    const observer = new IntersectionObserver(handleObserver, {
+      root: null,
+      rootMargin: "20px",
+      threshold: 1.0,
+    });
+
+    if (currentLoader) {
+      observer.observe(currentLoader);
+    }
+
+    return () => {
+      if (currentLoader) {
+        observer.unobserve(currentLoader);
       }
     };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [hasMore]);
-
-  useEffect(() => {
-    loadMoreItems();
-  }, [page, loadMoreItems]);
+  }, [handleObserver]);
 
   return (
     <>
-      {renderItems(items)}
-      {isLoading && <p>Đang tải...</p>}
+      {children}
+      <div ref={loaderRef} className="py-4 text-center text-pink-600">
+        {isFetching && loading}
+      </div>
     </>
   );
 }

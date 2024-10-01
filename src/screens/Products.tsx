@@ -2,25 +2,76 @@
 
 import ProductItem from "@/components/ProductItem";
 import { ProductType } from "@/models/model";
+import InfiniteScroll from "@/components/InfiniteScroll"; // Import the InfiniteScroll component
+import { useState, useEffect, useCallback } from "react";
+import { API_URL } from "@/utils/const";
 
-import { useState } from "react";
-export default function Products({ products }: { products: ProductType[] }) {
-  const [priceRange, setPriceRange] = useState({ min: 0, max: 30 });
+export default function ProductsPage({
+  products,
+}: {
+  products: ProductType[];
+}) {
+  const [openFilter, setOpenFilter] = useState(false);
+  const [allProducts, setAllProducts] = useState<ProductType[]>(products);
+  const [page, setPage] = useState(1);
+  const [totalProducts, setTotalProducts] = useState(0); // Total count of products
+  const [hasMore, setHasMore] = useState(true);
+
+  // Filtering states
+  const [priceRange, setPriceRange] = useState<{ min: number; max: number }>({
+    min: 0,
+    max: 30,
+  });
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
-  const [showFilters, setShowFilters] = useState(false);
 
+  const loadMoreProducts = async () => {
+    const typeFilter =
+      selectedTypes.length > 0 ? `&type=${selectedTypes.join(",")}` : "";
+    const res = await fetch(
+      `${API_URL}/nail/products?page=${page + 1}&page_size=10&min_price=${
+        priceRange.min
+      }&max_price=${priceRange.max}${typeFilter}`
+    );
+    const data = await res.json();
+
+    setAllProducts((prev) => [...prev, ...data.results]);
+    setPage((prev) => prev + 1);
+
+    // Check if we've fetched all available products
+    setHasMore(allProducts.length + data.results.length < totalProducts);
+  };
+
+  // Handle filter changes
   const handleTypeChange = (type: string) => {
     setSelectedTypes((prev) =>
       prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
     );
   };
 
-  const filteredProducts = products.filter(
-    (product) =>
-      product.mini_price >= priceRange.min &&
-      product.mini_price <= priceRange.max &&
-      (selectedTypes.length === 0 || selectedTypes.includes(product.type))
-  );
+  const handlePriceRangeChange = (min: number, max: number) => {
+    setPriceRange({ min, max });
+    resetProducts(); // Reset products when filter changes
+  };
+
+  // Reset products based on filters
+  const resetProducts = useCallback(async () => {
+    setPage(1);
+    const typeFilter =
+      selectedTypes.length > 0 ? `&type=${selectedTypes.join(",")}` : "";
+    const res = await fetch(
+      `${API_URL}/nail/products?page=1&page_size=10&min_price=${priceRange.min}&max_price=${priceRange.max}${typeFilter}`
+    );
+    const data = await res.json();
+
+    setAllProducts(data.results);
+    setTotalProducts(data.count); // Set total count from API response
+    setHasMore(data.results.length < data.count); // Determine if there's more data
+  }, [priceRange, selectedTypes]);
+
+  // Fetch initial filtered data when filters change
+  useEffect(() => {
+    resetProducts();
+  }, [resetProducts]); // Now resetProducts is included in the dependencies
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -28,22 +79,17 @@ export default function Products({ products }: { products: ProductType[] }) {
         Nail Products
       </h1>
 
+      {/* Filter Section */}
+
       <div className="mb-8">
         <button
-          onClick={() => setShowFilters(!showFilters)}
-          className="bg-pink-600 text-white px-4 py-2 rounded hover:bg-primary-dark transition-colors"
-          aria-expanded={showFilters}
-          aria-controls="filters"
+          onClick={() => setOpenFilter(!openFilter)}
+          className="bg-pink-500 text-white rounded px-4 py-2 outline-none hover:bg-pink-600"
         >
-          <i className="fas fa-filter mr-2" aria-hidden="true"></i>
-          {showFilters ? "Hide Filters" : "Show Filters"}
+          Filter <i className="fa-solid fa-filter ml-1"></i>
         </button>
-
-        {showFilters && (
-          <div id="filters" className="bg-white p-4 rounded shadow-md mt-4">
-            <h2 className="text-xl text-pink-600 font-semibold mb-4">
-              Filters
-            </h2>
+        {openFilter && (
+          <div className="mt-4 bg-white p-3 rounded-lg shadow-md">
             <div className="mb-4 product__range">
               <h3 className="font-semibold mb-2">Price Range</h3>
               <div className="flex items-center">
@@ -53,27 +99,27 @@ export default function Products({ products }: { products: ProductType[] }) {
                   max="30"
                   value={priceRange.min}
                   onChange={(e) =>
-                    setPriceRange((prev) => ({
-                      ...prev,
-                      min: Number(e.target.value),
-                    }))
+                    handlePriceRangeChange(
+                      Number(e.target.value),
+                      priceRange.max
+                    )
                   }
                   className="custom-input-range"
                   aria-label="Minimum price"
                 />
                 <span className="ml-2">${priceRange.min}</span>
               </div>
-              <div className=" flex items-center">
+              <div className="flex items-center">
                 <input
                   type="range"
                   min="0"
                   max="30"
                   value={priceRange.max}
                   onChange={(e) =>
-                    setPriceRange((prev) => ({
-                      ...prev,
-                      max: Number(e.target.value),
-                    }))
+                    handlePriceRangeChange(
+                      priceRange.min,
+                      Number(e.target.value)
+                    )
                   }
                   className="custom-input-range"
                   aria-label="Maximum price"
@@ -99,11 +145,14 @@ export default function Products({ products }: { products: ProductType[] }) {
         )}
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-        {filteredProducts.map((product) => (
-          <ProductItem key={product?.id} {...product} />
-        ))}
-      </div>
+      {/* Infinite Scroll Component */}
+      <InfiniteScroll loadMore={loadMoreProducts} hasMore={hasMore}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+          {allProducts.map((product) => (
+            <ProductItem key={product?.id} {...product} />
+          ))}
+        </div>
+      </InfiniteScroll>
     </div>
   );
 }
