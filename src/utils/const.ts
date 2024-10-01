@@ -15,3 +15,5 @@ export const createProductUrl = (name: string, id: number) =>
   `/products/${convertSlugUrl(name)}-p${id}.html`;
 
 export const API_URL = "http://127.0.0.1:8000";
+export const formattedMoney = (money: number) =>
+  new Intl.NumberFormat("vi-VN").format(money) + " đ";

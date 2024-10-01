@@ -1,7 +1,7 @@
 "use client";
 import { useCart } from "@/contexts/CartContext";
 import { ProductType } from "@/models/model";
-import { API_URL } from "@/utils/const";
+import { API_URL, formattedMoney } from "@/utils/const";
 import Image from "next/image";
 import React, { useState } from "react";
 
@@ -79,7 +79,7 @@ export default function ProductDetail({
             </div>
           </div>
           <p className="text-2xl font-bold text-pink-600 mb-4">
-            $ {product?.price}
+            {formattedMoney(product?.price)}
           </p>
           <p className="text-gray-600 mb-6">{productDetail?.description}</p>
 

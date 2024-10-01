@@ -1,4 +1,5 @@
 import { useCart } from "@/contexts/CartContext";
+import { formattedMoney } from "@/utils/const";
 import { useOutside } from "@/utils/useOutside";
 import Link from "next/link";
 import React, { useRef } from "react";
@@ -20,7 +21,9 @@ export default function MiniCart({ closeCart }: MiniCartProps) {
         <>
           <div className="flex items-center justify-between pb-1 mb-2 border-gray-200 border-b">
             <p className="text-base font-semibold text-pink-800">Cart</p>
-            <span className="text-base text-pink-800">${total}</span>
+            <span className="text-base text-pink-800">
+              {formattedMoney(total)}
+            </span>
           </div>
           <ul className="space-y-4 max-h-96 overflow-auto">
             {cartItems.map((item) => (
@@ -53,7 +56,7 @@ export default function MiniCart({ closeCart }: MiniCartProps) {
                     </button>
                   </div>
                   <span className="text-gray-700">
-                    ${(item.price * item.quantity).toFixed(2)}
+                    ${formattedMoney(item.price * item.quantity)}
                   </span>
                 </div>
               </li>

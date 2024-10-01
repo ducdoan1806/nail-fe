@@ -2,6 +2,7 @@
 
 import { useCart } from "@/contexts/CartContext";
 import { CityType, DistrictType, WardType } from "@/models/model";
+import { formattedMoney } from "@/utils/const";
 import { ChangeEvent, useState } from "react";
 
 export default function Payment({ citys }: { citys: CityType[] }) {
@@ -99,7 +100,7 @@ export default function Payment({ citys }: { citys: CityType[] }) {
                             </button>
                           </div>
                           <span className="mr-4 text-pink-700">
-                            ${(item.price * item.quantity).toFixed(2)}
+                            {formattedMoney(item.price * item.quantity)}
                           </span>
                           <button
                             className="text-pink-500 hover:text-pink-700"
@@ -117,7 +118,7 @@ export default function Payment({ citys }: { citys: CityType[] }) {
                         Total:
                       </span>
                       <span className="text-lg font-semibold text-pink-800">
-                        ${total.toFixed(2)}
+                        {formattedMoney(total)}
                       </span>
                     </div>
                   </div>

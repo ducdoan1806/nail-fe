@@ -1,5 +1,5 @@
 import { ProductType } from "@/models/model";
-import { API_URL, createProductUrl } from "@/utils/const";
+import { API_URL, createProductUrl, formattedMoney } from "@/utils/const";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -19,10 +19,10 @@ export default function FeturedItem(props: ProductType) {
           {props?.name}
         </h3>
 
-        <p className="text-gray-600 mb-4">{props?.description}</p>
+        <p className="text-gray-600 mb-4 truncate">{props?.description}</p>
         <div className="flex justify-between items-center">
           <span className="text-lg font-bold text-pink-600">
-            ${props?.mini_price}
+            {formattedMoney(props?.mini_price)}
           </span>
           <Link
             href={createProductUrl(props.name, props.id)}
