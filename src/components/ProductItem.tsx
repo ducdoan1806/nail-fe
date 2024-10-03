@@ -8,7 +8,7 @@ export default function ProductItem(product: ProductType) {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
       <Image
-        src={`${API_URL}/${product?.images[0]?.image}`}
+        src={`${API_URL}${product?.images[0]?.image}`}
         alt={product?.name}
         width={200}
         height={200}

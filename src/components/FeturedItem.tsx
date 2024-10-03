@@ -8,7 +8,7 @@ export default function FeturedItem(props: ProductType) {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
       <Image
-        src={API_URL + "/" + props?.images[0]?.image}
+        src={API_URL + props?.images[0]?.image}
         alt={props?.name}
         width={300}
         height={300}
