@@ -36,7 +36,7 @@ export default function ProductDetail({
         <div className="md:w-1/2">
           <div className="bg-white rounded-lg shadow-md overflow-hidden">
             <Image
-              src={`${API_URL}${largeImg}`}
+              src={`${API_URL}/${largeImg}`}
               alt={productDetail?.name}
               width={600}
               height={600}
@@ -55,7 +55,7 @@ export default function ProductDetail({
                 }}
               >
                 <Image
-                  src={`${API_URL}${item?.image}`}
+                  src={`${API_URL}/${item?.image}`}
                   alt={`Product image ${item}`}
                   width={150}
                   height={150}
@@ -170,11 +170,13 @@ export default function ProductDetail({
                 Product Details:
               </h2>
               <ul className="list-disc list-inside text-gray-600 space-y-1">
-                {JSON.parse(productDetail?.detail).map(
-                  (item: string, idx: number) => (
-                    <li key={idx}>Set includes 4 nail polish colors</li>
-                  )
-                )}
+                {productDetail?.detail &&
+                  typeof productDetail?.detail === "object" &&
+                  JSON.parse(productDetail?.detail).map(
+                    (item: string, idx: number) => (
+                      <li key={idx}>Set includes 4 nail polish colors</li>
+                    )
+                  )}
               </ul>
             </div>
           )}

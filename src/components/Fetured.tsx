@@ -4,7 +4,7 @@ import { ProductType } from "@/models/model";
 import { API_URL } from "@/utils/const";
 
 export default async function Fetured() {
-  const res = await fetch(`${API_URL}/nail/products/?page=1&page_size=4`);
+  const res = await fetch(`${API_URL}/nail/products/?page=1&page_size=8`);
   const data = await res.json();
   const feturedData = data?.results;
 

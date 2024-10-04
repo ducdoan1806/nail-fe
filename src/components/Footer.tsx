@@ -1,5 +1,7 @@
 import logo from "@/app/logo-white.svg";
+import { menu } from "@/utils/const";
 import Image from "next/image";
+import Link from "next/link";
 export default function Footer() {
   return (
     <footer className="bg-gray-800 text-white py-10">
@@ -16,26 +18,16 @@ export default function Footer() {
           <div>
             <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2">
-              <li>
-                <a href="#" className="text-gray-400 hover:text-white">
-                  Home
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-400 hover:text-white">
-                  Products
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-400 hover:text-white">
-                  About Us
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-400 hover:text-white">
-                  Contact
-                </a>
-              </li>
+              {menu.map((item, idx) => (
+                <li key={idx}>
+                  <Link
+                    href={item.path}
+                    className="text-gray-400 hover:text-white"
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
           <div>
