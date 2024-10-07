@@ -4,6 +4,8 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { CartProvider } from "@/contexts/CartContext";
+import { Suspense } from "react";
+import Loading from "./loading";
 
 export const metadata: Metadata = {
   title: "Gạo Nails",
@@ -19,11 +21,13 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <CartProvider>
-          <div className="min-h-screen bg-gray-100">
-            <Header />
-            {children}
-            <Footer />
-          </div>
+          <Suspense fallback={<Loading />}>
+            <div className="min-h-screen bg-gray-100">
+              <Header />
+              {children}
+              <Footer />
+            </div>
+          </Suspense>
         </CartProvider>
       </body>
     </html>
