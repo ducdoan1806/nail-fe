@@ -20,8 +20,11 @@ export default function ProductItem(product: ProductType) {
         <div className="flex items-center mb-2">
           <span className="text-yellow-500 mr-1">
             <i className="fas fa-star" aria-hidden="true"></i>
+            <i className="fas fa-star" aria-hidden="true"></i>
+            <i className="fas fa-star" aria-hidden="true"></i>
+            <i className="fas fa-star" aria-hidden="true"></i>
+            <i className="fas fa-star" aria-hidden="true"></i>
           </span>
-          <span>{product?.rating}</span>
         </div>
         <div className="flex justify-between items-center">
           <span className="text-lg font-bold">
