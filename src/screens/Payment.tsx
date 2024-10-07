@@ -2,10 +2,14 @@
 
 import { useCart } from "@/contexts/CartContext";
 import { CityType, DistrictType, WardType } from "@/models/model";
-import { formattedMoney } from "@/utils/const";
+import { API_URL, formattedMoney } from "@/utils/const";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 
 export default function Payment({ citys }: { citys: CityType[] }) {
+  const { emptyCart } = useCart();
+  const router = useRouter();
   const [customerInfo, setCustomerInfo] = useState({
     name: "",
     phone: "",
@@ -14,15 +18,27 @@ export default function Payment({ citys }: { citys: CityType[] }) {
     district: "",
     ward: "",
     paymentMethod: "cash",
+    note: "",
   });
 
   const { cartItems, updateQuantity, removeFromCart, total } = useCart();
   const [districts, setDistricts] = useState<DistrictType[]>([]);
   const [wards, setWards] = useState<WardType[]>([]);
-
+  const [location, setLocation] = useState({
+    city: "",
+    district: "",
+    ward: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const handleProvinceChange = async (e: ChangeEvent<HTMLSelectElement>) => {
     const provinceId = e.target.value;
-    setCustomerInfo({ ...customerInfo, city: provinceId, district: "" });
+    setLocation({ ...location, city: provinceId });
+    setCustomerInfo({
+      ...customerInfo,
+      city: e.target.options[e.target.selectedIndex].text,
+      district: "",
+    });
     setWards([]);
     const res = await fetch(
       `https://provinces.open-api.vn/api/p/${provinceId}?depth=2`
@@ -33,19 +49,71 @@ export default function Payment({ citys }: { citys: CityType[] }) {
 
   const handleDistrictChange = async (e: ChangeEvent<HTMLSelectElement>) => {
     const districtId = e.target.value;
-    setCustomerInfo({ ...customerInfo, district: districtId });
+    setLocation({ ...location, district: districtId });
+    setCustomerInfo({
+      ...customerInfo,
+      district: e.target.options[e.target.selectedIndex].text,
+    });
     const res = await fetch(
       `https://provinces.open-api.vn/api/d/${districtId}?depth=2`
     );
     const wards = await res.json();
     setWards(wards.wards);
   };
-
+  const handleWardChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setLocation({ ...location, ward: e.target.value });
+    setCustomerInfo({
+      ...customerInfo,
+      ward: e.target.options[e.target.selectedIndex].text,
+    });
+  };
   const handleCustomerInfo = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     setCustomerInfo({ ...customerInfo, [e.target.name]: e.target.value });
   };
+
+  const handleSubmitOrder = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`${API_URL}/nail/order/`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({
+          name: customerInfo?.name,
+          phone: customerInfo?.phone,
+          address:
+            customerInfo?.ward && customerInfo?.district && customerInfo?.city
+              ? `${customerInfo?.address}, ${customerInfo?.ward}, ${customerInfo?.district}, ${customerInfo?.city}`
+              : "",
+          payment_method: customerInfo?.paymentMethod,
+          note: customerInfo?.note,
+          city_code: location?.city,
+          district_code: location?.district,
+          ward_code: location?.ward,
+          carts: cartItems.map((item) => ({
+            product_detail: item?.product_detail,
+            quantity: item?.quantity,
+            price: item?.price,
+          })),
+        }),
+      });
+      const data = await response.json();
+      if (!data?.status) {
+        setError(data?.message);
+      } else {
+        emptyCart();
+        router.push(`/order-success/order-p${data?.data?.order_code}.html`);
+        setError("");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    setLoading(false);
+  };
+
   return (
     <div className="min-h-screen py-12">
       <div className="container mx-auto px-4">
@@ -59,7 +127,15 @@ export default function Payment({ citys }: { citys: CityType[] }) {
                 Your Cart
               </h2>
               {cartItems.length === 0 ? (
-                <p className="text-pink-800">Your cart is empty.</p>
+                <p className="text-pink-800">
+                  Your cart is empty.{" "}
+                  <Link
+                    href="/products"
+                    className="underline font-semibold hover:text-pink-600"
+                  >
+                    Buy now
+                  </Link>
+                </p>
               ) : (
                 <>
                   <ul className="space-y-4">
@@ -179,7 +255,7 @@ export default function Payment({ citys }: { citys: CityType[] }) {
                       City
                     </label>
                     <select
-                      value={customerInfo.city}
+                      value={location.city}
                       onChange={handleProvinceChange}
                       id="city"
                       name="city"
@@ -207,7 +283,7 @@ export default function Payment({ citys }: { citys: CityType[] }) {
                         District
                       </label>
                       <select
-                        value={customerInfo.district}
+                        value={location.district}
                         onChange={handleDistrictChange}
                         id="district"
                         name="district"
@@ -233,7 +309,7 @@ export default function Payment({ citys }: { citys: CityType[] }) {
                         Wards
                       </label>
                       <select
-                        onChange={handleCustomerInfo}
+                        onChange={handleWardChange}
                         value={customerInfo.ward}
                         id="ward"
                         name="ward"
@@ -288,9 +364,33 @@ export default function Payment({ citys }: { citys: CityType[] }) {
                       <option value="cash">Cash on Delivery</option>
                     </select>
                   </div>
+                  <div>
+                    <label
+                      htmlFor="note"
+                      className="block mb-1 font-medium text-pink-800"
+                    >
+                      <i className="fas fa-clipboard mr-2 text-pink-600"></i>
+                      Note
+                    </label>
+                    <textarea
+                      onChange={handleCustomerInfo}
+                      value={customerInfo.note}
+                      id="note"
+                      name="note"
+                      rows={4}
+                      className="resize-none w-full px-3 py-2 border border-pink-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
+                    ></textarea>
+                  </div>
                 </div>
+                {error && (
+                  <p className="text-center text-red-500 text-base mt-1">
+                    {error}
+                  </p>
+                )}
                 <button
+                  onClick={handleSubmitOrder}
                   type="submit"
+                  disabled={loading}
                   className="w-full mt-6 bg-pink-600 text-white py-2 px-4 rounded-md hover:bg-pink-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2"
                 >
                   Place Order

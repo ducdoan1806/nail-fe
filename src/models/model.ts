@@ -28,7 +28,7 @@ export type CartItem = {
   quantity: number;
   colorCode: string;
   colorName: string;
-  productDetailId: number;
+  product_detail: number;
 };
 export type WardType = {
   name: string;

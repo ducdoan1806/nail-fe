@@ -21,7 +21,7 @@ export default function ProductDetail({
     colorName: productDetail?.detail_products[0]?.color_name,
     price: productDetail?.detail_products[0]?.price,
     quantity: cartItem?.quantity || 1,
-    productDetailId: productDetail?.detail_products[0]?.id,
+    product_detail: productDetail?.detail_products[0]?.id,
   });
 
   const updateCart = (id: number, number: number) => {
@@ -100,7 +100,7 @@ export default function ProductDetail({
                         price: detail?.price,
                         colorCode: detail?.color_code,
                         colorName: detail?.color_name,
-                        productDetailId: detail?.id,
+                        product_detail: detail?.id,
                       });
                     }}
                     className={`w-8 h-8 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 ${

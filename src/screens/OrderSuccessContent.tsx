@@ -1,55 +1,16 @@
-"use client";
-
 import Link from "next/link";
-import { useState, useEffect } from "react";
 
 interface OrderSuccessContentProps {
-  orderNumber: string;
-  estimatedTime: string;
+  orderCode: string;
+  name: string;
+  phone: string;
+  address: string;
+  note: string;
 }
 
-export default function OrderSuccessContent({
-  orderNumber,
-  estimatedTime,
-}: OrderSuccessContentProps) {
-  const [showConfetti, setShowConfetti] = useState(false);
-
-  useEffect(() => {
-    setShowConfetti(true);
-    const timer = setTimeout(() => setShowConfetti(false), 5000);
-    return () => clearTimeout(timer);
-  }, []);
-
+export default function OrderSuccessContent(props: OrderSuccessContentProps) {
   return (
     <div className="relative overflow-hidden">
-      {showConfetti && (
-        <div className="absolute inset-0 pointer-events-none">
-          {[...Array(50)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute animate-fall"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `-${Math.random() * 20 + 10}%`,
-                animationDuration: `${Math.random() * 3 + 2}s`,
-                animationDelay: `${Math.random() * 2}s`,
-              }}
-            >
-              <i
-                className={`fas fa-${
-                  ["heart", "star", "circle", "square"][
-                    Math.floor(Math.random() * 4)
-                  ]
-                } text-${
-                  ["pink", "purple", "red", "yellow"][
-                    Math.floor(Math.random() * 4)
-                  ]
-                }-400`}
-              ></i>
-            </div>
-          ))}
-        </div>
-      )}
       <div className="text-center space-y-6 bg-white p-8 rounded-lg shadow-lg max-w-md w-full mx-4">
         <div className="text-6xl text-pink-500 flex justify-center space-x-4">
           <i className="fas fa-check-circle animate-bounce"></i>
@@ -60,10 +21,19 @@ export default function OrderSuccessContent({
         </p>
         <div className="text-left space-y-2">
           <p className="text-pink-600">
-            <strong>Order Number:</strong> {orderNumber}
+            <strong>Order Number:</strong> #{props?.orderCode ?? "--"}
           </p>
           <p className="text-pink-600">
-            <strong>Estimated Time:</strong> {estimatedTime}
+            <strong>Name:</strong> {props?.name ?? "--"}
+          </p>
+          <p className="text-pink-600">
+            <strong>Phone:</strong> {props?.phone ?? "--"}
+          </p>
+          <p className="text-pink-600">
+            <strong>Address:</strong> {props?.address ?? "--"}
+          </p>
+          <p className="text-pink-600">
+            <strong>Note:</strong> {props?.note ?? "--"}
           </p>
         </div>
         <div className="space-y-4">
