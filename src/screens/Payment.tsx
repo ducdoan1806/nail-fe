@@ -82,14 +82,14 @@ export default function Payment({ citys }: { citys: CityType[] }) {
         },
         method: "POST",
         body: JSON.stringify({
-          name: customerInfo?.name,
-          phone: customerInfo?.phone,
+          name: customerInfo?.name.trim(),
+          phone: customerInfo?.phone.trim(),
           address:
             customerInfo?.ward && customerInfo?.district && customerInfo?.city
-              ? `${customerInfo?.address}, ${customerInfo?.ward}, ${customerInfo?.district}, ${customerInfo?.city}`
+              ? `${customerInfo?.address.trim()}, ${customerInfo?.ward.trim()}, ${customerInfo?.district.trim()}, ${customerInfo?.city.trim()}`
               : "",
-          payment_method: customerInfo?.paymentMethod,
-          note: customerInfo?.note,
+          payment_method: customerInfo?.paymentMethod.trim(),
+          note: customerInfo?.note.trim(),
           city_code: location?.city,
           district_code: location?.district,
           ward_code: location?.ward,
