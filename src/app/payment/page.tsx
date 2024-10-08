@@ -1,6 +1,7 @@
 import { CityType } from "@/models/model";
 import Payment from "@/screens/Payment";
 import fetchHttps from "@/utils/https";
+import logger from "@/utils/logger";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -15,7 +16,7 @@ export default async function PaymentPage() {
     );
     return <Payment citys={citys} />;
   } catch (error) {
-    console.error("Failed to fetch city data:", error);
+    logger.error(error);
     redirect("/not-found");
   }
 }

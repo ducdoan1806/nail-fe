@@ -1,5 +1,6 @@
 import OrderSuccessContent from "@/screens/OrderSuccessContent";
 import { API_URL } from "@/utils/const";
+import logger from "@/utils/logger";
 import { notFound } from "next/navigation";
 
 export default async function OrderSuccessPage({
@@ -16,6 +17,7 @@ export default async function OrderSuccessPage({
     }
     const res = await fetch(`${API_URL}/nail/order/${orderNumber}/`);
     const data = await res.json();
+   
 
     return (
       <div className="min-h-screen flex items-center justify-center bg-pink-100">
@@ -25,11 +27,12 @@ export default async function OrderSuccessPage({
           phone={data?.data?.phone}
           address={data?.data?.address}
           note={data?.data?.note}
+          carts={data?.data?.carts}
         />
       </div>
     );
   } catch (error) {
-    console.log("error: ", error);
+    logger.error(error);
     return notFound();
   }
 }

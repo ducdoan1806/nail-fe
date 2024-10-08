@@ -1,3 +1,4 @@
+import { formattedMoney } from "@/utils/const";
 import Link from "next/link";
 
 interface OrderSuccessContentProps {
@@ -6,6 +7,13 @@ interface OrderSuccessContentProps {
   phone: string;
   address: string;
   note: string;
+  carts: {
+    quantity: number;
+    price: number;
+    products: {
+      name: string;
+    };
+  }[];
 }
 
 export default function OrderSuccessContent(props: OrderSuccessContentProps) {
@@ -35,7 +43,24 @@ export default function OrderSuccessContent(props: OrderSuccessContentProps) {
           <p className="text-pink-600">
             <strong>Note:</strong> {props?.note ?? "--"}
           </p>
+          <div className="text-pink-600">
+            <strong>Detail:</strong>
+            <ul>
+              {props.carts.map((item, idx) => {
+                console.log(item);
+                return (
+                  <li key={idx} className="flex items-center justify-between">
+                    <span>
+                      {item?.products?.name} (x{item?.quantity})
+                    </span>
+                    <span>{formattedMoney(item?.price)}</span>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
         </div>
+
         <div className="space-y-4">
           <Link
             href="/"
