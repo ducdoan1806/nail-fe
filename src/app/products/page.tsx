@@ -10,6 +10,7 @@ export const metadata: Metadata = {
 
 export default async function ProductsPage() {
   try {
+    logger.info(`${API_URL}/nail/products/?page=1&page_size=8`);
     const res = await fetch(`${API_URL}/nail/products/?page=1&page_size=8`);
     const data = await res.json();
     return <Products products={data.results} />;

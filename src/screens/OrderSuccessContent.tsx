@@ -47,13 +47,12 @@ export default function OrderSuccessContent(props: OrderSuccessContentProps) {
             <strong>Detail:</strong>
             <ul>
               {props.carts.map((item, idx) => {
-                console.log(item);
                 return (
                   <li key={idx} className="flex items-center justify-between">
                     <span>
                       {item?.products?.name} (x{item?.quantity})
                     </span>
-                    <span>{formattedMoney(item?.price)}</span>
+                    <span>{formattedMoney(item?.price * item?.quantity)}</span>
                   </li>
                 );
               })}

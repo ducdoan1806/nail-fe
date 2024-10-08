@@ -15,9 +15,9 @@ export default async function OrderSuccessPage({
     if (match) {
       orderNumber = match[1];
     }
+    logger.info(`${API_URL}/nail/order/${orderNumber}/`);
     const res = await fetch(`${API_URL}/nail/order/${orderNumber}/`);
     const data = await res.json();
-   
 
     return (
       <div className="min-h-screen flex items-center justify-center bg-pink-100">
