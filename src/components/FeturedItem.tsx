@@ -26,9 +26,9 @@ export default function FeturedItem(props: ProductType) {
           </span>
           <Link
             href={createProductUrl(props.name, props.id)}
-            className="bg-pink-600 text-white py-2 px-4 rounded-full hover:bg-pink-700 transition duration-300"
+            className="bg-pink-600 text-white text-sm py-2 px-3 rounded-full hover:bg-pink-700 transition duration-300"
           >
-            View more <i className="ml-2 fa-solid fa-angles-right"></i>
+            View more <i className="ml-1 fa-solid fa-angles-right"></i>
           </Link>
         </div>
       </div>
