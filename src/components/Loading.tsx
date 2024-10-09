@@ -1,11 +1,15 @@
 import React from "react";
 
-export default function Loading({ size = "w-10 h-10" }) {
+export default function Loading({
+  size = "w-10 h-10",
+  color = "fill-pink-600",
+  bg = "text-gray-200",
+}) {
   return (
     <div role="status">
       <svg
         aria-hidden="true"
-        className={`${size} text-gray-400 animate-spin dark:text-gray-200 fill-pink-600`}
+        className={`${size} ${bg} animate-spin dark:${bg} ${color}`}
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

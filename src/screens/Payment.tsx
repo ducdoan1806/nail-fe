@@ -1,11 +1,12 @@
 "use client";
 
+import Loading from "@/components/Loading";
 import { useCart } from "@/contexts/CartContext";
 import { CityType, DistrictType, WardType } from "@/models/model";
 import { API_URL, formattedMoney } from "@/utils/const";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 
 export default function Payment({ citys }: { citys: CityType[] }) {
   const { emptyCart } = useCart();
@@ -30,6 +31,7 @@ export default function Payment({ citys }: { citys: CityType[] }) {
     ward: "",
   });
   const [loading, setLoading] = useState(false);
+
   const [error, setError] = useState("");
   const handleProvinceChange = async (e: ChangeEvent<HTMLSelectElement>) => {
     const provinceId = e.target.value;
@@ -73,7 +75,10 @@ export default function Payment({ citys }: { citys: CityType[] }) {
     setCustomerInfo({ ...customerInfo, [e.target.name]: e.target.value });
   };
 
-  const handleSubmitOrder = async () => {
+  const handleSubmitOrder = async (
+    e: FormEvent<HTMLFormElement>
+  ): Promise<void> => {
+    e.preventDefault();
     setLoading(true);
     try {
       const response = await fetch(`${API_URL}/nail/order/`, {
@@ -102,7 +107,11 @@ export default function Payment({ citys }: { citys: CityType[] }) {
       });
       const data = await response.json();
       if (!data?.status) {
-        setError(data?.message);
+        setError(
+          typeof data?.message !== "string"
+            ? JSON.stringify(data?.message)
+            : data?.message
+        );
       } else {
         emptyCart();
         router.push(`/order-success/order-p${data?.data?.order_code}.html`);
@@ -110,8 +119,9 @@ export default function Payment({ citys }: { citys: CityType[] }) {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
@@ -207,7 +217,7 @@ export default function Payment({ citys }: { citys: CityType[] }) {
               <h2 className="text-2xl font-semibold mb-4 text-pink-700">
                 Customer Information
               </h2>
-              <form>
+              <form onSubmit={handleSubmitOrder}>
                 <div className="space-y-4">
                   <div>
                     <label
@@ -388,12 +398,21 @@ export default function Payment({ citys }: { citys: CityType[] }) {
                   </p>
                 )}
                 <button
-                  onClick={handleSubmitOrder}
                   type="submit"
-                  disabled={loading}
+                  disabled={!loading}
                   className="w-full mt-6 bg-pink-600 text-white py-2 px-4 rounded-md hover:bg-pink-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2"
                 >
-                  Place Order
+                  {loading ? (
+                    <div className="flex justify-center">
+                      <Loading
+                        size="h-8 w-8"
+                        color="fill-white"
+                        bg="text-pink-600"
+                      />
+                    </div>
+                  ) : (
+                    "Place Order"
+                  )}
                 </button>
               </form>
             </div>
