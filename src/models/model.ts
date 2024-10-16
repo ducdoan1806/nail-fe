@@ -33,23 +33,17 @@ export type CartItem = {
 export type WardType = {
   name: string;
   code: number;
-  division_type: string;
-  codename: string;
-  district_code: number;
+  id: number;
+  district: number;
 };
 export type DistrictType = {
   name: string;
   code: number;
-  division_type: string;
-  codename: string;
-  province_code: number;
-  wards: WardType[];
+  id: number;
+  city: number;
 };
 export type CityType = {
   name: string;
   code: number;
-  division_type: string;
-  codename: string;
-  phone_code: number;
-  districts: DistrictType[];
+  id: number;
 };

@@ -42,11 +42,9 @@ export default function Payment({ citys }: { citys: CityType[] }) {
       district: "",
     });
     setWards([]);
-    const res = await fetch(
-      `https://provinces.open-api.vn/api/p/${provinceId}?depth=2`
-    );
-    const districts = await res.json();
-    setDistricts(districts?.districts);
+    const res = await fetch(`${API_URL}/nail/address/?city=${provinceId}`);
+    const data = await res.json();
+    setDistricts(data?.data);
   };
 
   const handleDistrictChange = async (e: ChangeEvent<HTMLSelectElement>) => {
@@ -56,11 +54,9 @@ export default function Payment({ citys }: { citys: CityType[] }) {
       ...customerInfo,
       district: e.target.options[e.target.selectedIndex].text,
     });
-    const res = await fetch(
-      `https://provinces.open-api.vn/api/d/${districtId}?depth=2`
-    );
-    const wards = await res.json();
-    setWards(wards.wards);
+    const res = await fetch(`${API_URL}/nail/address/?district=${districtId}`);
+    const data = await res.json();
+    setWards(data?.data);
   };
   const handleWardChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setLocation({ ...location, ward: e.target.value });
@@ -304,7 +300,7 @@ export default function Payment({ citys }: { citys: CityType[] }) {
                           Select your district
                         </option>
                         {districts.map((item) => (
-                          <option key={item.code} value={item.code}>
+                          <option key={item?.code} value={item?.code}>
                             {item.name}
                           </option>
                         ))}
@@ -330,7 +326,7 @@ export default function Payment({ citys }: { citys: CityType[] }) {
                           Select your ward
                         </option>
                         {wards.map((item) => (
-                          <option key={item.code} value={item.code}>
+                          <option key={item?.code} value={item?.code}>
                             {item.name}
                           </option>
                         ))}
@@ -399,7 +395,7 @@ export default function Payment({ citys }: { citys: CityType[] }) {
                 )}
                 <button
                   type="submit"
-                  disabled={!loading}
+                  disabled={loading}
                   className="w-full mt-6 bg-pink-600 text-white py-2 px-4 rounded-md hover:bg-pink-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2"
                 >
                   {loading ? (

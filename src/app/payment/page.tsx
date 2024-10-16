@@ -1,6 +1,5 @@
-import { CityType } from "@/models/model";
 import Payment from "@/screens/Payment";
-import fetchHttps from "@/utils/https";
+import { API_URL } from "@/utils/const";
 import logger from "@/utils/logger";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
@@ -11,10 +10,9 @@ export const metadata: Metadata = {
 
 export default async function PaymentPage() {
   try {
-    const citys = await fetchHttps<CityType[]>(
-      "https://provinces.open-api.vn/api/p/"
-    );
-    return <Payment citys={citys} />;
+    const res = await fetch(`${API_URL}/nail/address/`);
+    const data = await res.json();
+    return <Payment citys={data?.data} />;
   } catch (error) {
     logger.error(error);
     redirect("/not-found");
