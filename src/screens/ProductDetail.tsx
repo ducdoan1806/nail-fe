@@ -171,12 +171,12 @@ export default function ProductDetail({
               </h2>
               <ul className="list-disc list-inside text-gray-600 space-y-1">
                 {productDetail?.detail &&
-                  typeof productDetail?.detail === "object" &&
-                  JSON.parse(productDetail?.detail).map(
-                    (item: string, idx: number) => (
-                      <li key={idx}>Set includes 4 nail polish colors</li>
-                    )
-                  )}
+                  productDetail?.detail
+                    ?.split(".")
+                    .filter((item) => item.trim() !== "")
+                    .map((item: string, idx: number) => (
+                      <li key={idx}>{item.trim()}</li>
+                    ))}
               </ul>
             </div>
           )}
