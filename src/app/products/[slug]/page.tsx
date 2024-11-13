@@ -22,16 +22,16 @@ export default async function ProductDetailPage({
 }: {
   params: { slug: string };
 }) {
-  const { slug } = params;
-  const id = slug?.match(/p(\d+)\.html/)?.[1];
-  logger.info(`${API_URL}/nail/products/?product_id=${id}`);
   try {
+    const { slug } = params;
+    const id = slug?.match(/p(\d+)\.html/)?.[1];
+    logger.info(`${API_URL}/nail/products/?product_id=${id}`);
     const res = await fetch(`${API_URL}/nail/products/?product_id=${id}`);
     const data = await res.json();
 
     return <ProductDetail productDetail={data?.data} />;
   } catch (error) {
-    logger.error(error);
+    logger.error("ProductDetailPage: " + error);
     return notFound();
   }
 }

@@ -8,14 +8,14 @@ export default async function OrderSuccessPage({
 }: {
   params: { slug: string };
 }) {
-  const match = params.slug.match(/p(\d+)\.html/);
-  let orderNumber = "";
-
-  if (match) {
-    orderNumber = match[1];
-  }
-  logger.info(`${API_URL}/nail/order/${orderNumber}/`);
   try {
+    const match = params.slug.match(/p(\d+)\.html/);
+    let orderNumber = "";
+
+    if (match) {
+      orderNumber = match[1];
+    }
+    logger.info(`${API_URL}/nail/order/${orderNumber}/`);
     const res = await fetch(`${API_URL}/nail/order/${orderNumber}/`);
     const data = await res.json();
 
@@ -32,7 +32,7 @@ export default async function OrderSuccessPage({
       </div>
     );
   } catch (error) {
-    logger.error(error);
+    logger.error("OrderSuccessPage: " + error);
     return notFound();
   }
 }
