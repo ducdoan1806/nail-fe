@@ -27,6 +27,7 @@ export default async function Fetured() {
       </section>
     );
   } catch (error) {
+    console.log("error: ", error);
     logger.error("Fetured: " + error);
     return notFound();
   }
