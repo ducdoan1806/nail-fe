@@ -1,5 +1,7 @@
 import ProductDetail from "@/screens/ProductDetail";
 import { API_URL } from "@/utils/const";
+import logger from "@/utils/logger";
+import { notFound } from "next/navigation";
 export async function generateMetadata({
   params,
 }: {
@@ -22,9 +24,14 @@ export default async function ProductDetailPage({
 }) {
   const { slug } = params;
   const id = slug?.match(/p(\d+)\.html/)?.[1];
+  logger.info(`${API_URL}/nail/products/?product_id=${id}`);
+  try {
+    const res = await fetch(`${API_URL}/nail/products/?product_id=${id}`);
+    const data = await res.json();
 
-  const res = await fetch(`${API_URL}/nail/products/?product_id=${id}`);
-  const data = await res.json();
-
-  return <ProductDetail productDetail={data?.data} />;
+    return <ProductDetail productDetail={data?.data} />;
+  } catch (error) {
+    logger.error(error);
+    return notFound();
+  }
 }

@@ -8,14 +8,14 @@ export default async function OrderSuccessPage({
 }: {
   params: { slug: string };
 }) {
-  try {
-    const match = params.slug.match(/p(\d+)\.html/);
-    let orderNumber = "";
+  const match = params.slug.match(/p(\d+)\.html/);
+  let orderNumber = "";
 
-    if (match) {
-      orderNumber = match[1];
-    }
-    logger.info(`${API_URL}/nail/order/${orderNumber}/`);
+  if (match) {
+    orderNumber = match[1];
+  }
+  logger.info(`${API_URL}/nail/order/${orderNumber}/`);
+  try {
     const res = await fetch(`${API_URL}/nail/order/${orderNumber}/`);
     const data = await res.json();
 

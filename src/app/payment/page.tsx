@@ -9,6 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default async function PaymentPage() {
+  logger.info(`${API_URL}/nail/address/`);
   try {
     const res = await fetch(`${API_URL}/nail/address/`);
     const data = await res.json();
