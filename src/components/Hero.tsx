@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-
+import imgTest from "@/app/test.jpg";
 export default function Hero() {
   return (
     <section className="bg-pink-100 py-20">
@@ -23,7 +23,7 @@ export default function Hero() {
         </div>
         <div className="md:w-1/2">
           <Image
-            src="/placeholder.svg?height=400&width=600"
+            src={imgTest}
             alt="Nail products showcase"
             width={600}
             height={400}
