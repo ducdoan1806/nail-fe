@@ -75,7 +75,7 @@ export default function ProductsPage({
   }, [resetProducts]); // Now resetProducts is included in the dependencies
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-9">
       <h1 className="text-3xl text-pink-600 font-bold mb-8 text-center">
         Nail Products
       </h1>
