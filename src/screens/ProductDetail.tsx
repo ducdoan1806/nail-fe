@@ -103,7 +103,7 @@ export default function ProductDetail({
                         product_detail: detail?.id,
                       });
                     }}
-                    className={`w-8 h-8 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 ${
+                    className={`border border-gray-300 w-8 h-8 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 ${
                       product?.colorCode === detail?.color_code
                         ? "ring-2 ring-pink-500 ring-offset-2"
                         : ""
@@ -175,7 +175,7 @@ export default function ProductDetail({
                     ?.split(".")
                     .filter((item) => item.trim() !== "")
                     .map((item: string, idx: number) => (
-                      <li key={idx}>{item.trim()}</li>
+                      <li key={idx}>{item.trim()}.</li>
                     ))}
               </ul>
             </div>
