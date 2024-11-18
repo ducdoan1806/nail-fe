@@ -47,3 +47,11 @@ export type CityType = {
   code: number;
   id: number;
 };
+export type ContactType = {
+  id: number;
+  social: string;
+  name: string;
+  url: string;
+  created_at: string;
+  updated_at: string;
+};

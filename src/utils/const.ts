@@ -6,6 +6,12 @@ export const menu = [
   { name: "About", path: "#" },
   { name: "Contact", path: "#" },
 ];
+export const socials = [
+  { icon: "fa-brands fa-facebook", name: "Facebook" },
+  { icon: "fa-brands fa-tiktok", name: "Tiktok" },
+  { icon: "fa-solid fa-phone", name: "Phone" },
+  { icon: "fa-solid fa-location-dot", name: "Location" },
+];
 
 export const convertSlugUrl = (str: string) => {
   if (!str) return "";
