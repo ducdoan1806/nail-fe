@@ -3,12 +3,18 @@ import slugify from "slugify";
 export const menu = [
   { name: "Home", path: "/" },
   { name: "Products", path: "/products" },
-  { name: "About", path: "#" },
-  { name: "Contact", path: "#" },
+  { name: "Contact us", path: "/contacts" },
 ];
 export const socials = [
-  { icon: "fa-brands fa-facebook", name: "Facebook" },
-  { icon: "fa-brands fa-tiktok", name: "Tiktok" },
+  {
+    icon: "fa-brands fa-facebook",
+    name: "Facebook",
+  },
+  {
+    icon: "fa-brands fa-tiktok",
+    name: "Tiktok",
+  },
+
   { icon: "fa-solid fa-phone", name: "Phone" },
   { icon: "fa-solid fa-location-dot", name: "Location" },
 ];
