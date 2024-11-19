@@ -10,7 +10,7 @@ export default async function Footer() {
     logger.info(`Footer: ${API_URL}/nail/contacts/`);
     const res = await fetch(`${API_URL}/nail/contacts/?page_size=4&page=1`);
     const data = await res.json();
-
+    const now = new Date();
     return (
       <footer className="bg-gray-800 text-white py-10">
         <div className="container mx-auto px-4">
@@ -44,7 +44,7 @@ export default async function Footer() {
                 {data?.results.map((item: ContactType) => (
                   <li key={item?.id}>
                     <a
-                    target="_blank"
+                      target="_blank"
                       href={item?.url}
                       className="text-gray-400 hover:text-white"
                     >
@@ -65,7 +65,7 @@ export default async function Footer() {
           </div>
           <div className="mt-8 pt-8 border-t border-gray-700 text-center">
             <p className="text-gray-400">
-              &copy; 2024 Gạo Nails. All rights reserved.
+              &copy; {now?.getFullYear()} Gạo Nails. All rights reserved.
             </p>
           </div>
         </div>
