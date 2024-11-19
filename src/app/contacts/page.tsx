@@ -4,7 +4,7 @@ import logger from "@/utils/logger";
 import React from "react";
 
 const page = async () => {
-  logger.info(`${API_URL}/nail/contacts/`);
+  logger.info(`Contact: ${API_URL}/nail/contacts/`);
   const res = await fetch(`${API_URL}/nail/contacts/?page_size=999&page=1`);
   const data = await res.json();
   const contacts: ContactType[] = [];

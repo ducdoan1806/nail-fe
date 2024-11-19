@@ -7,7 +7,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 export default async function Footer() {
   try {
-    logger.info(`${API_URL}/nail/contacts/`);
+    logger.info(`Footer: ${API_URL}/nail/contacts/`);
     const res = await fetch(`${API_URL}/nail/contacts/?page_size=4&page=1`);
     const data = await res.json();
 

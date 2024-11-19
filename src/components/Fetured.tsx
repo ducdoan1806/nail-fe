@@ -7,7 +7,7 @@ import logger from "@/utils/logger";
 
 export default async function Fetured() {
   try {
-    logger.info(`${API_URL}/nail/products/?page=1&page_size=8`);
+    logger.info(`Fetured: ${API_URL}/nail/products/?page=1&page_size=8`);
     const res = await fetch(`${API_URL}/nail/products/?page=1&page_size=8`);
     const data = await res.json();
     const feturedData = data?.results;

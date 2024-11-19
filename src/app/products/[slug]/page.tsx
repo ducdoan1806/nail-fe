@@ -25,7 +25,9 @@ export default async function ProductDetailPage({
   try {
     const { slug } = params;
     const id = slug?.match(/p(\d+)\.html/)?.[1];
-    logger.info(`${API_URL}/nail/products/?product_id=${id}`);
+    logger.info(
+      `ProductDetailPage: ${API_URL}/nail/products/?product_id=${id}`
+    );
     const res = await fetch(`${API_URL}/nail/products/?product_id=${id}`);
     const data = await res.json();
 
