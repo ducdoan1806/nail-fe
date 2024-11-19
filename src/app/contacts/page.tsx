@@ -18,7 +18,7 @@ const page = async () => {
   });
 
   return (
-    <main className="container mx-auto px-4 py-12">
+    <main className="container mx-auto px-4 py-9">
       <h1 className="text-4xl font-bold text-center text-pink-600 mb-8">
         Get in Touch
       </h1>

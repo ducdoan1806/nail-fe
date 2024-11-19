@@ -21,7 +21,7 @@ export default function ProductsPage({
   // Filtering states
   const [priceRange, setPriceRange] = useState<{ min: number; max: number }>({
     min: 0,
-    max: 30,
+    max: 5000000,
   });
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
 
@@ -76,7 +76,7 @@ export default function ProductsPage({
 
   return (
     <div className="container mx-auto px-4 py-9">
-      <h1 className="text-3xl text-pink-600 font-bold mb-8 text-center">
+      <h1 className="text-4xl text-pink-600 font-bold mb-8 text-center">
         Nail Products
       </h1>
 
@@ -97,7 +97,7 @@ export default function ProductsPage({
                 <input
                   type="range"
                   min="0"
-                  max="30"
+                  max="5000000"
                   value={priceRange.min}
                   onChange={(e) =>
                     handlePriceRangeChange(
@@ -114,7 +114,7 @@ export default function ProductsPage({
                 <input
                   type="range"
                   min="0"
-                  max="30"
+                  max="5000000"
                   value={priceRange.max}
                   onChange={(e) =>
                     handlePriceRangeChange(
@@ -152,7 +152,7 @@ export default function ProductsPage({
         hasMore={hasMore}
         loading={<Loading />}
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-7">
           {allProducts.map((product) => (
             <ProductItem key={product?.id} {...product} />
           ))}

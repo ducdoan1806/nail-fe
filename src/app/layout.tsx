@@ -22,7 +22,7 @@ export default function RootLayout({
       <body>
         <CartProvider>
           <Suspense fallback={<Loading />}>
-            <div className="min-h-screen bg-gray-100">
+            <div className="min-h-screen bg-pink-50">
               <Header />
               {children}
               <Footer />
